@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="campus_world">
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!-- GROUND PLANE REMOVED: Now the cart will fall if it drives off the map! -->
+
+
+
+    <model name="campus_map">
+      <static>true</static>
+      <!-- Rotate 90 degrees around X-axis to lay it flat (1.5708 radians) -->
+      <pose>0 0 0 1.570796 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/yash/buggy_demo_ws/install/CART_description/share/CART_description/meshes/map1.obj</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>file:///home/yash/buggy_demo_ws/install/CART_description/share/CART_description/meshes/map1.obj</uri>
+            </mesh>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+  </world>
+</sdf>
