@@ -106,29 +106,6 @@ To control the Ackermann vehicle using the keyboard:
 
 ---
 
-## 🗺 Running SLAM (Mapping)
-
-To run 2D mapping with `slam_toolbox`[cite: 1, 3]:
-
-1. **Launch SLAM with Simulation Time Enabled[cite: 3]:**
-   ```bash
-   source /root/colcon_ws/install/setup.bash
-   ros2 launch saye_bringup slam.launch.py use_sim_time:=true
-   ```
-
-2. **Verify Transform Tree:**
-   Ensure the `odom -> base_link` transform is active[cite: 1, 4]:
-   ```bash
-   ros2 run tf2_ros tf2_echo odom base_link
-   ```
-
-3. **Save Map:**
-   When mapping is complete, use the RViz `SlamToolboxPlugin` panel or run:
-   ```bash
-   ros2 run nav2_map_server map_saver_cli -f ~/my_map
-   ```
-
----
 
 ## 📡 Topic & Frame Reference
 
@@ -156,5 +133,3 @@ To run 2D mapping with `slam_toolbox`[cite: 1, 3]:
   Ensure `export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp` is set and run `ros2 daemon stop`.
 * **GUI / RViz fails to open:**  
   Verify `xhost +local:root` was executed on the host system before launching Docker.
-* **`Failed to compute odom pose` in SLAM[cite: 1]:**  
-  Verify `use_sim_time:=true` is passed to the launch file[cite: 3] and check that `base_frame` is set to `base_link` in `saye_bringup/config/slam.yaml`[cite: 1].
