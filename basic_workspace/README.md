@@ -4,8 +4,6 @@ Welcome to the CAMP Gazebo simulation environment! This repository contains a fu
 
 ## 🚀 Getting Started
 
-If you have just cloned this repository, you do **not** need to create a new workspace manually. This repository *is* the workspace! 
-
 Just follow these steps to build and run the simulation:
 
 ### 1. Build the Workspace
@@ -26,7 +24,7 @@ ros2 launch CART_description gazebo.launch.py
 *This will open Gazebo, load the 3D campus map, and spawn the autonomous buggy.*
 
 ### 3. Drive the Buggy!
-We have built a custom, video-game style WASD teleop controller that flawlessly handles Ackermann steering kinematics (even in reverse!). 
+We have built a custom, video-game style WASD teleop controller. 
 Open a **second terminal**, and run:
 ```bash
 cd ~/CAMP
@@ -47,7 +45,6 @@ A small grey window will appear. **Click on it to focus it**, and use **W/A/S/D*
 
 ### The Physics Plugin
 - We use the Gazebo Harmonic `gz-sim-ackermann-steering-system` plugin.
-- **Custom Acceleration Control:** We explicitly disabled internal acceleration interpolation within the Gazebo plugin. Instead, the Python teleop script tracks and simulates the vehicle's velocity down to the millisecond, pushing perfectly synchronized `Twist` messages to Gazebo. This completely eliminates "steering snap" and race conditions when transitioning from braking to reversing.
 
 ### The Campus Map
 - The environment is a custom `map1.obj` loaded into a custom `campus.sdf` world file.
