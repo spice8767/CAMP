@@ -1,7 +1,7 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, TimerAction
+from launch.actions import IncludeLaunchDescription, TimerAction, SetEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 import xacro
@@ -42,7 +42,7 @@ def generate_launch_description():
             executable='create',
             arguments=[
                 "-topic", "/robot_description",
-                "-name", "CART",
+                "-name", "saye",
                 "-allow_renaming", "false",  # prevents "_1" duplicate
                 "-x", "14.926",
                 "-y", "40.592",
@@ -61,6 +61,10 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        # Force rendering and physics simulation on NVIDIA RTX 4060
+        SetEnvironmentVariable('__NV_PRIME_RENDER_OFFLOAD', '1'),
+        SetEnvironmentVariable('__GLX_VENDOR_LIBRARY_NAME', 'nvidia'),
+        SetEnvironmentVariable('__VK_LAYER_NV_optimus', 'NVIDIA_only'),
         gazebo,
         spawn_robot,
         ros_gz_bridge,

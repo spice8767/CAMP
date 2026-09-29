@@ -1,0 +1,911 @@
+campus_origin:
+  description: Reference datum for local Cartesian (x,y) in meters
+  lat0: 30.96
+  lon0: 76.465
+campus_stops:
+  Satluj Front:
+    lat: 30.96825
+    lon: 76.4684
+    x: 324.2
+    y: 917.36
+    snapped_road_node_id: '14103649907'
+    road_node_lat: 30.9681709
+    road_node_lon: 76.4680164
+    road_node_x: 287.62
+    road_node_y: 908.56
+    distance_to_road_m: 37.6
+    nearest_junction_id: '11052493596'
+    junction_type: 3-way T/Y Junction
+  Satluj Back:
+    lat: 30.96925
+    lon: 76.4684
+    x: 324.2
+    y: 1028.55
+    snapped_road_node_id: '11066077902'
+    road_node_lat: 30.9695146
+    road_node_lon: 76.4684381
+    road_node_x: 327.83
+    road_node_y: 1057.98
+    distance_to_road_m: 29.7
+    nearest_junction_id: '9516401595'
+    junction_type: 3-way T/Y Junction
+  Beas Front:
+    lat: 30.96825
+    lon: 76.467
+    x: 190.71
+    y: 917.36
+    snapped_road_node_id: '11052493596'
+    road_node_lat: 30.9681426
+    road_node_lon: 76.4677641
+    road_node_x: 263.56
+    road_node_y: 905.42
+    distance_to_road_m: 73.8
+    nearest_junction_id: '11052493596'
+    junction_type: 3-way T/Y Junction
+  Chenab Front:
+    lat: 30.96922
+    lon: 76.4655
+    x: 47.68
+    y: 1025.22
+    snapped_road_node_id: '11052493600'
+    road_node_lat: 30.969228
+    road_node_lon: 76.4656374
+    road_node_x: 60.78
+    road_node_y: 1026.11
+    distance_to_road_m: 13.1
+    nearest_junction_id: '9513069040'
+    junction_type: Road End / Cul-de-sac
+  Mess:
+    lat: 30.96618
+    lon: 76.4713
+    x: 600.72
+    y: 687.18
+    snapped_road_node_id: '9513402276'
+    road_node_lat: 30.9664668
+    road_node_lon: 76.4707024
+    road_node_x: 543.74
+    road_node_y: 719.08
+    distance_to_road_m: 65.3
+    nearest_junction_id: '9513402276'
+    junction_type: 3-way T/Y Junction
+  Ravi Front:
+    lat: 30.9678
+    lon: 76.47
+    x: 476.76
+    y: 867.32
+    snapped_road_node_id: '9513069048'
+    road_node_lat: 30.9679267
+    road_node_lon: 76.470126
+    road_node_x: 488.78
+    road_node_y: 881.41
+    distance_to_road_m: 18.5
+    nearest_junction_id: '9513069046'
+    junction_type: 3-way T/Y Junction
+  Ravi Back:
+    lat: 30.9674117
+    lon: 76.4696523
+    x: 443.61
+    y: 824.14
+    snapped_road_node_id: '-25605'
+    road_node_lat: 30.9674117
+    road_node_lon: 76.4696523
+    road_node_x: 443.61
+    road_node_y: 824.15
+    distance_to_road_m: 0.0
+    nearest_junction_id: '-25605'
+    junction_type: Road End / Cul-de-sac
+  Chemistry Block:
+    lat: 30.96868
+    lon: 76.4706
+    x: 533.97
+    y: 965.17
+    snapped_road_node_id: '9513402251'
+    road_node_lat: 30.9688205
+    road_node_lon: 76.4711056
+    road_node_x: 582.18
+    road_node_y: 980.79
+    distance_to_road_m: 50.7
+    nearest_junction_id: '9513402251'
+    junction_type: 3-way T/Y Junction
+  Mechanical Block Front:
+    lat: 30.9675
+    lon: 76.47111
+    x: 582.6
+    y: 833.96
+    snapped_road_node_id: '12480400217'
+    road_node_lat: 30.9671269
+    road_node_lon: 76.4712443
+    road_node_x: 595.41
+    road_node_y: 792.48
+    distance_to_road_m: 43.4
+    nearest_junction_id: '9513732531'
+    junction_type: 3-way T/Y Junction
+  Mechanical Block Back:
+    lat: 30.9665
+    lon: 76.47111
+    x: 582.6
+    y: 722.77
+    snapped_road_node_id: '9513402276'
+    road_node_lat: 30.9664668
+    road_node_lon: 76.4707024
+    road_node_x: 543.74
+    road_node_y: 719.08
+    distance_to_road_m: 39.0
+    nearest_junction_id: '9513402276'
+    junction_type: 3-way T/Y Junction
+  Auditorium:
+    lat: 30.9686
+    lon: 76.47359
+    x: 819.08
+    y: 956.28
+    snapped_road_node_id: '9514233026'
+    road_node_lat: 30.9684018
+    road_node_lon: 76.4731898
+    road_node_x: 780.92
+    road_node_y: 934.24
+    distance_to_road_m: 44.1
+    nearest_junction_id: '9514233028'
+    junction_type: Road End / Cul-de-sac
+  SAB A:
+    lat: 30.96786
+    lon: 76.47376
+    x: 835.29
+    y: 873.99
+    snapped_road_node_id: '11752291184'
+    road_node_lat: 30.9680076
+    road_node_lon: 76.4736372
+    road_node_x: 823.58
+    road_node_y: 890.4
+    distance_to_road_m: 20.2
+    nearest_junction_id: '11752291184'
+    junction_type: 3-way T/Y Junction
+  SAB B:
+    lat: 30.96781
+    lon: 76.47489
+    x: 943.04
+    y: 868.43
+    snapped_road_node_id: '11752291194'
+    road_node_lat: 30.9680424
+    road_node_lon: 76.475403
+    road_node_x: 991.95
+    road_node_y: 894.27
+    distance_to_road_m: 55.3
+    nearest_junction_id: '11752291194'
+    junction_type: 3-way T/Y Junction
+  SAB S:
+    lat: 30.9668
+    lon: 76.4745
+    x: 905.85
+    y: 756.13
+    snapped_road_node_id: '9513402278'
+    road_node_lat: 30.9665078
+    road_node_lon: 76.4743271
+    road_node_x: 889.36
+    road_node_y: 723.63
+    distance_to_road_m: 36.4
+    nearest_junction_id: '11752291195'
+    junction_type: 3-way T/Y Junction
+  Admin:
+    lat: 30.9686
+    lon: 76.47262
+    x: 726.59
+    y: 956.28
+    snapped_road_node_id: '14103649906'
+    road_node_lat: 30.9688375
+    road_node_lon: 76.4723108
+    road_node_x: 697.1
+    road_node_y: 982.69
+    distance_to_road_m: 39.6
+    nearest_junction_id: '9513402252'
+    junction_type: 3-way T/Y Junction
+  LOC:
+    lat: 30.96772
+    lon: 76.47195
+    x: 662.7
+    y: 858.42
+    snapped_road_node_id: '9513732534'
+    road_node_lat: 30.9679295
+    road_node_lon: 76.4721315
+    road_node_x: 680.01
+    road_node_y: 881.72
+    distance_to_road_m: 29.0
+    nearest_junction_id: '14103649902'
+    junction_type: 3-way T/Y Junction
+  Main Gate:
+    lat: 30.96009
+    lon: 76.47441
+    x: 897.27
+    y: 10.01
+    snapped_road_node_id: '9513402297'
+    road_node_lat: 30.9600892
+    road_node_lon: 76.474411
+    road_node_x: 897.36
+    road_node_y: 9.92
+    distance_to_road_m: 0.1
+    nearest_junction_id: '9513402283'
+    junction_type: 3-way T/Y Junction
+  Nalanda Library:
+    lat: 30.96763
+    lon: 76.4732
+    x: 781.89
+    y: 848.42
+    snapped_road_node_id: '11752291189'
+    road_node_lat: 30.9675824
+    road_node_lon: 76.4727112
+    road_node_x: 735.28
+    road_node_y: 843.12
+    distance_to_road_m: 46.9
+    nearest_junction_id: '11752291184'
+    junction_type: 3-way T/Y Junction
+  Maggi Point:
+    lat: 30.96813
+    lon: 76.46939
+    x: 418.6
+    y: 904.01
+    snapped_road_node_id: '14103608564'
+    road_node_lat: 30.9680617
+    road_node_lon: 76.4693975
+    road_node_x: 419.31
+    road_node_y: 896.42
+    distance_to_road_m: 7.6
+    nearest_junction_id: '9513069042'
+    junction_type: 4-way Crossroad
+  Burger House:
+    lat: 30.96811
+    lon: 76.46939
+    x: 418.6
+    y: 901.79
+    snapped_road_node_id: '14103608564'
+    road_node_lat: 30.9680617
+    road_node_lon: 76.4693975
+    road_node_x: 419.31
+    road_node_y: 896.42
+    distance_to_road_m: 5.4
+    nearest_junction_id: '9513069042'
+    junction_type: 4-way Crossroad
+junction_count: 92
+junction_nodes:
+  '11752291177':
+    degree: 4
+    type: 4-way Crossroad
+    lat: 30.9663543
+    lon: 76.4779479
+    x: 1234.62
+    y: 706.57
+  '11752291176':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9665733
+    lon: 76.4779308
+    x: 1232.99
+    y: 730.92
+  '9513069040':
+    degree: 1
+    type: Road End / Cul-de-sac
+    lat: 30.9692165
+    lon: 76.4652476
+    x: 23.61
+    y: 1024.83
+  '9513732530':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9682256
+    lon: 76.4716707
+    x: 636.07
+    y: 914.64
+  '11752274360':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9648659
+    lon: 76.4767588
+    x: 1121.23
+    y: 541.06
+  '9516401595':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9694874
+    lon: 76.4674729
+    x: 235.8
+    y: 1054.95
+  '11752291171':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9663681
+    lon: 76.4789941
+    x: 1334.37
+    y: 708.1
+  '14103608589':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9692723
+    lon: 76.4740929
+    x: 867.03
+    y: 1031.03
+  '14103608577':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9673814
+    lon: 76.4673493
+    x: 224.01
+    y: 820.77
+  '9513432148':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9683319
+    lon: 76.4764781
+    x: 1094.47
+    y: 926.47
+  '9513432147':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9665598
+    lon: 76.4773042
+    x: 1173.24
+    y: 729.42
+  '9513069069':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9696441
+    lon: 76.4774298
+    x: 1185.21
+    y: 1072.37
+  '9513069084':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9698906
+    lon: 76.4774829
+    x: 1190.28
+    y: 1099.78
+  '14103649903':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9678242
+    lon: 76.4725769
+    x: 722.48
+    y: 870.01
+  '11752291187':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9666499
+    lon: 76.4727449
+    x: 738.5
+    y: 739.44
+  '11752291170':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9663095
+    lon: 76.4760762
+    x: 1056.14
+    y: 701.58
+  '11752291194':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9680424
+    lon: 76.475403
+    x: 991.95
+    y: 894.27
+  '9513069024':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9689923
+    lon: 76.4723967
+    x: 705.29
+    y: 999.9
+  '9513069041':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9695284
+    lon: 76.4693499
+    x: 414.77
+    y: 1059.51
+  '9513069078':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9705176
+    lon: 76.4785481
+    x: 1291.85
+    y: 1169.5
+  '9513432158':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.967778
+    lon: 76.4764744
+    x: 1094.11
+    y: 864.87
+  '11752274359':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9648825
+    lon: 76.476091
+    x: 1057.56
+    y: 542.91
+  '9513402264':
+    degree: 1
+    type: Road End / Cul-de-sac
+    lat: 30.969251
+    lon: 76.4702808
+    x: 503.54
+    y: 1028.66
+  '9513069073':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9698919
+    lon: 76.4785356
+    x: 1290.65
+    y: 1099.93
+  '9513069043':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9681327
+    lon: 76.4696807
+    x: 446.32
+    y: 904.31
+  '11752291169':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9660398
+    lon: 76.4779267
+    x: 1232.59
+    y: 671.6
+  '9513069079':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9708325
+    lon: 76.4774668
+    x: 1188.74
+    y: 1204.52
+  '9513432159':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9677977
+    lon: 76.4778972
+    x: 1229.78
+    y: 867.06
+  '11752291183':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9664994
+    lon: 76.4735684
+    x: 817.02
+    y: 722.7
+  '11752291186':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9664853
+    lon: 76.4726428
+    x: 728.76
+    y: 721.13
+  '9513069075':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9701951
+    lon: 76.4774839
+    x: 1190.37
+    y: 1133.64
+  '9513069015':
+    degree: 4
+    type: 4-way Crossroad
+    lat: 30.9695943
+    lon: 76.4740893
+    x: 866.69
+    y: 1066.84
+  '9513402282':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9665345
+    lon: 76.4760046
+    x: 1049.32
+    y: 726.6
+  '14121711105':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9665417
+    lon: 76.4761357
+    x: 1061.82
+    y: 727.4
+  '9513402252':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9683957
+    lon: 76.4722742
+    x: 693.61
+    y: 933.56
+  '14212446381':
+    degree: 1
+    type: Road End / Cul-de-sac
+    lat: 30.9692961
+    lon: 76.4758141
+    x: 1031.15
+    y: 1033.68
+  '-25605':
+    degree: 1
+    type: Road End / Cul-de-sac
+    lat: 30.9674117
+    lon: 76.4696523
+    x: 443.61
+    y: 824.15
+  '9513069080':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9708393
+    lon: 76.4785346
+    x: 1290.56
+    y: 1205.28
+  '9513402283':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9639004
+    lon: 76.4760742
+    x: 1055.95
+    y: 433.7
+  '9513402263':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9692634
+    lon: 76.472355
+    x: 701.32
+    y: 1030.04
+  '9513732525':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9671408
+    lon: 76.4718407
+    x: 652.28
+    y: 794.02
+  '11752291175':
+    degree: 4
+    type: 4-way Crossroad
+    lat: 30.9663357
+    lon: 76.4766899
+    x: 1114.66
+    y: 704.5
+  '11752291180':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9665879
+    lon: 76.4790052
+    x: 1335.43
+    y: 732.54
+  '9513432162':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9681052
+    lon: 76.4777933
+    x: 1219.87
+    y: 901.26
+  '11752274322':
+    degree: 1
+    type: Road End / Cul-de-sac
+    lat: 30.9663902
+    lon: 76.4654356
+    x: 41.54
+    y: 710.56
+  '9513069046':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9680874
+    lon: 76.4701178
+    x: 488.0
+    y: 899.28
+  '11752274367':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9657231
+    lon: 76.4779731
+    x: 1237.02
+    y: 636.38
+  '11752291188':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9664854
+    lon: 76.4728448
+    x: 748.02
+    y: 721.14
+  '9514211706':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9653769
+    lon: 76.4794929
+    x: 1381.94
+    y: 597.88
+  '9513732531':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.967378
+    lon: 76.4718196
+    x: 650.27
+    y: 820.4
+  '9513432153':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9689273
+    lon: 76.4776895
+    x: 1209.98
+    y: 992.67
+  '9513069077':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9705113
+    lon: 76.4774775
+    x: 1189.76
+    y: 1168.8
+  '9513432149':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9683488
+    lon: 76.477697
+    x: 1210.69
+    y: 928.34
+  '9513402276':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9664668
+    lon: 76.4707024
+    x: 543.74
+    y: 719.08
+  '9513402284':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9639389
+    lon: 76.4762695
+    x: 1074.58
+    y: 437.99
+  '11752291174':
+    degree: 4
+    type: 4-way Crossroad
+    lat: 30.9660212
+    lon: 76.4766996
+    x: 1115.59
+    y: 669.53
+  '14103608563':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9680656
+    lon: 76.4696427
+    x: 442.69
+    y: 896.85
+  '11752274368':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9660097
+    lon: 76.4760676
+    x: 1055.32
+    y: 668.25
+  '9513432151':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9686193
+    lon: 76.4776826
+    x: 1209.32
+    y: 958.42
+  '11752274366':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9657036
+    lon: 76.4760681
+    x: 1055.37
+    y: 634.21
+  '9513402274':
+    degree: 4
+    type: 4-way Crossroad
+    lat: 30.9664198
+    lon: 76.4667272
+    x: 164.69
+    y: 713.85
+  '11752274362':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9642288
+    lon: 76.4767647
+    x: 1121.79
+    y: 470.22
+  '9513432146':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9674645
+    lon: 76.4772943
+    x: 1172.29
+    y: 830.01
+  '9514233027':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9688033
+    lon: 76.4722679
+    x: 693.01
+    y: 978.88
+  '11052493596':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9681426
+    lon: 76.4677641
+    x: 263.56
+    y: 905.42
+  '11752291178':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9659594
+    lon: 76.477929
+    x: 1232.81
+    y: 662.66
+  '9513402251':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9688205
+    lon: 76.4711056
+    x: 582.18
+    y: 980.79
+  '14103608580':
+    degree: 1
+    type: Road End / Cul-de-sac
+    lat: 30.9673209
+    lon: 76.4677859
+    x: 265.64
+    y: 814.05
+  '11752274355':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9640545
+    lon: 76.4767366
+    x: 1119.12
+    y: 450.84
+  '11752291172':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9656975
+    lon: 76.476709
+    x: 1116.48
+    y: 633.53
+  '11752291195':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9665282
+    lon: 76.4754
+    x: 991.67
+    y: 725.9
+  '11752291173':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9665553
+    lon: 76.4766939
+    x: 1115.04
+    y: 728.92
+  '11752291182':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9663605
+    lon: 76.4784561
+    x: 1283.07
+    y: 707.26
+  '11752291184':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9680076
+    lon: 76.4736372
+    x: 823.58
+    y: 890.4
+  '9513402242':
+    degree: 1
+    type: Road End / Cul-de-sac
+    lat: 30.9690598
+    lon: 76.4710988
+    x: 581.54
+    y: 1007.4
+  '9513432150':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9686068
+    lon: 76.4764554
+    x: 1092.3
+    y: 957.03
+  '9513069047':
+    degree: 1
+    type: Road End / Cul-de-sac
+    lat: 30.9673489
+    lon: 76.47013
+    x: 489.16
+    y: 817.16
+  '14103649902':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9677612
+    lon: 76.472326
+    x: 698.55
+    y: 863.01
+  '11752274357':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9645453
+    lon: 76.4779909
+    x: 1238.72
+    y: 505.41
+  '9513069060':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9682196
+    lon: 76.4777525
+    x: 1215.98
+    y: 913.98
+  '9513069019':
+    degree: 4
+    type: 4-way Crossroad
+    lat: 30.9695748
+    lon: 76.4723526
+    x: 701.09
+    y: 1064.67
+  '9513402277':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9664884
+    lon: 76.472158
+    x: 682.53
+    y: 721.48
+  '9513432160':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9680852
+    lon: 76.4764672
+    x: 1093.43
+    y: 899.03
+  '9513069076':
+    degree: 4
+    type: 4-way Crossroad
+    lat: 30.9702065
+    lon: 76.4785512
+    x: 1292.14
+    y: 1134.91
+  '9514233028':
+    degree: 1
+    type: Road End / Cul-de-sac
+    lat: 30.9688086
+    lon: 76.4742097
+    x: 878.17
+    y: 979.47
+  '11752274361':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9642205
+    lon: 76.4761086
+    x: 1059.23
+    y: 469.3
+  '9513402311':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9638456
+    lon: 76.4703622
+    x: 511.3
+    y: 427.61
+  '11752291181':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9659711
+    lon: 76.4784557
+    x: 1283.04
+    y: 663.96
+  '9513069042':
+    degree: 4
+    type: 4-way Crossroad
+    lat: 30.9682059
+    lon: 76.4693799
+    x: 417.63
+    y: 912.45
+  '14103649901':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.9681001
+    lon: 76.4718602
+    x: 654.14
+    y: 900.69
+  '11752274356':
+    degree: 1
+    type: Road End / Cul-de-sac
+    lat: 30.9651817
+    lon: 76.4767621
+    x: 1121.55
+    y: 576.18
+  '9513732537':
+    degree: 3
+    type: 3-way T/Y Junction
+    lat: 30.968215
+    lon: 76.4718239
+    x: 650.68
+    y: 913.47

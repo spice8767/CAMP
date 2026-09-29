@@ -1,6 +1,6 @@
 from launch_ros.actions import Node
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
 from launch.substitutions import LaunchConfiguration
 from launch.conditions import IfCondition, UnlessCondition
 import xacro
@@ -56,6 +56,10 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        # Force rendering on NVIDIA RTX 4060
+        SetEnvironmentVariable('__NV_PRIME_RENDER_OFFLOAD', '1'),
+        SetEnvironmentVariable('__GLX_VENDOR_LIBRARY_NAME', 'nvidia'),
+        SetEnvironmentVariable('__VK_LAYER_NV_optimus', 'NVIDIA_only'),
         gui_arg,
         robot_state_publisher_node,
         joint_state_publisher_node,

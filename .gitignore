@@ -1,6 +1,43 @@
+# ── Colcon & ROS 2 Build Artifacts ──
 build/
 install/
 log/
-.vscode/
-*.pyc
+COLCON_IGNORE
+
+# ── Python Cache & Bytecode ──
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ── TF & Diagnostic Dumps ──
+frames*.gv
+frames*.pdf
+*.gv
+
+# ── Temporary Previews & Scratch HTML ──
+*.html
+
+# ── Editor & OS Metadata ──
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+*.log

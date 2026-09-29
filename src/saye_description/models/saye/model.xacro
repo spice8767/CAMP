@@ -1,0 +1,400 @@
+<?xml version="1.0"?>
+<robot name="saye" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Dummy root link: KDL does not support inertia on the root link.
+       base_footprint is massless and acts as the URDF root. -->
+  <link name="base_footprint"/>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="-0.0038250693917988316 0.2294986787564171 0.4822630810508102" rpy="0 0 0" />
+      <mass value="400.0" />
+      <inertia ixx="40.0" ixy="0.0" ixz="0.0" iyy="40.0" iyz="0.0" izz="40.0" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/base_link.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/base_link.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="wheel_front_left_1">
+    <inertial>
+      <origin xyz="0.070037 -0.000007 0.000036" rpy="0 0 0" />
+      <mass value="20.0" />
+      <inertia ixx="2.0" ixy="0.0" ixz="0.0" iyy="2.0" iyz="0.0" izz="2.0" />
+    </inertial>
+    <visual>
+      <origin xyz="-0.39 0.4011 -0.2943" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/wheel_front_left_1.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.39 0.4011 -0.2943" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/wheel_front_left_1.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="wheel_front_right_1">
+    <inertial>
+      <origin xyz="-0.085821 0.000019 -0.000031" rpy="0 0 0" />
+      <mass value="20.0" />
+      <inertia ixx="2.0" ixy="0.0" ixz="0.0" iyy="2.0" iyz="0.0" izz="2.0" />
+    </inertial>
+    <visual>
+      <origin xyz="0.3738 0.4007 -0.2946" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/wheel_front_right_1.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.3738 0.4007 -0.2946" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/wheel_front_right_1.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="top_1">
+    <inertial>
+      <origin xyz="-0.000288 1.083115 1.474448" rpy="0 0 0" />
+      <mass value="400.0" />
+      <inertia ixx="40.0" ixy="0.0" ixz="0.0" iyy="40.0" iyz="0.0" izz="40.0" />
+    </inertial>
+    <visual>
+      <origin xyz="-0.0037 0.0723 -0.3302" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/top_1.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.0037 0.0723 -0.3302" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/top_1.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="wheel_back_left_1">
+    <inertial>
+      <origin xyz="0.070068 -0.000046 0.000023" rpy="0 0 0" />
+      <mass value="20.0" />
+      <inertia ixx="2.0" ixy="0.0" ixz="0.0" iyy="2.0" iyz="0.0" izz="2.0" />
+    </inertial>
+    <visual>
+      <origin xyz="-0.3884 -1.7234 -0.292" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/wheel_back_left_1.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.3884 -1.7234 -0.292" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/wheel_back_left_1.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="wheel_back_right_1">
+    <inertial>
+      <origin xyz="-0.070068 -0.000022 -0.000033" rpy="0 0 0" />
+      <mass value="20.0" />
+      <inertia ixx="2.0" ixy="0.0" ixz="0.0" iyy="2.0" iyz="0.0" izz="2.0" />
+    </inertial>
+    <visual>
+      <origin xyz="0.3894 -1.7224 -0.2942" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/wheel_back_right_1.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.3894 -1.7224 -0.2942" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/wheel_back_right_1.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="Knuckle_left_1">
+    <inertial>
+      <origin xyz="0.01 -0.000007 0.131666" rpy="0 0 0" />
+      <mass value="20.0" />
+      <inertia ixx="2.0" ixy="0.0" ixz="0.0" iyy="2.0" iyz="0.0" izz="2.0" />
+    </inertial>
+    <visual>
+      <origin xyz="-0.37 0.4011 -0.2943" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/Knuckle_left_1.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="-0.37 0.4011 -0.2943" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/Knuckle_left_1.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="knuckle_right_1">
+    <inertial>
+      <origin xyz="-0.009958 0.000019 0.134759" rpy="0 0 0" />
+      <mass value="20.0" />
+      <inertia ixx="2.0" ixy="0.0" ixz="0.0" iyy="2.0" iyz="0.0" izz="2.0" />
+    </inertial>
+    <visual>
+      <origin xyz="0.362 0.4007 -0.2946" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/knuckle_right_1.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.362 0.4007 -0.2946" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://saye_description/models/saye/meshes/knuckle_right_1.stl" scale="0.1 0.1 0.1" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="lidar_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.1" />
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="0.05" length="0.07" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder radius="0.05" length="0.07" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="depth_camera_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.05" />
+      <inertia ixx="0.00002" ixy="0.0" ixz="0.0" iyy="0.00002" iyz="0.0" izz="0.00002" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.05 0.05 0.05" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.05 0.05 0.05" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Joints -->
+  <joint name="Revolute_10" type="continuous">
+    <origin xyz="0.02 0.0 0.0" rpy="0 0 0" />
+    <parent link="Knuckle_left_1" />
+    <child link="wheel_front_left_1" />
+    <axis xyz="1.0 0.0 0.0" />
+  </joint>
+
+  <joint name="Revolute_11" type="continuous">
+    <origin xyz="-0.0118 0.0 0.0" rpy="0 0 0" />
+    <parent link="knuckle_right_1" />
+    <child link="wheel_front_right_1" />
+    <axis xyz="1.0 0.0 0.0" />
+  </joint>
+
+  <joint name="Rigid_15" type="fixed">
+    <origin xyz="0.0037 -0.0723 0.3302" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="top_1" />
+  </joint>
+
+  <joint name="Revolute_20" type="continuous">
+    <origin xyz="0.3884 1.7234 0.292" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="wheel_back_left_1" />
+    <axis xyz="1.0 0.0 0.0" />
+  </joint>
+
+  <joint name="Revolute_21" type="continuous">
+    <origin xyz="-0.3894 1.7224 0.2942" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="wheel_back_right_1" />
+    <axis xyz="1.0 0.0 0.0" />
+  </joint>
+
+  <joint name="Revolute_22" type="revolute">
+    <origin xyz="0.37 -0.4011 0.2943" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="Knuckle_left_1" />
+    <axis xyz="0.0 0.0 1.0" />
+    <limit lower="-0.523599" upper="0.523599" effort="100.0" velocity="100.0" />
+  </joint>
+
+  <joint name="Revolute_23" type="revolute">
+    <origin xyz="-0.362 -0.4007 0.2946" rpy="0 0 0" />
+    <parent link="base_link" />
+    <child link="knuckle_right_1" />
+    <axis xyz="0.0 0.0 1.0" />
+    <limit lower="-0.523599" upper="0.523599" effort="100.0" velocity="100.0" />
+  </joint>
+
+  <joint name="lidar_joint" type="fixed">
+    <origin xyz="0 0 1.65" rpy="0 0 -1.5707963" />
+    <parent link="top_1" />
+    <child link="lidar_link" />
+  </joint>
+
+  <joint name="depth_camera_joint" type="fixed">
+    <origin xyz="0 -0.55 1.0" rpy="0 0 -1.5707963" />
+    <parent link="base_link" />
+    <child link="depth_camera_link" />
+  </joint>
+
+  <!-- Gazebo specific extensions for sensors -->
+  <gazebo reference="base_link">
+    <sensor name="imu_sensor" type="imu">
+      <pose>0 0 0 0 0 0</pose>
+      <always_on>1</always_on>
+      <update_rate>250</update_rate>
+      <topic>imu</topic>
+      <imu>
+        <enable_orientation>1</enable_orientation>
+        <angular_velocity>
+          <x><noise type="gaussian"><mean>0</mean><stddev>0.009</stddev></noise></x>
+          <y><noise type="gaussian"><mean>0</mean><stddev>0.009</stddev></noise></y>
+          <z><noise type="gaussian"><mean>0</mean><stddev>0.009</stddev></noise></z>
+        </angular_velocity>
+        <linear_acceleration>
+          <x><noise type="gaussian"><mean>0</mean><stddev>0.021</stddev></noise></x>
+          <y><noise type="gaussian"><mean>0</mean><stddev>0.021</stddev></noise></y>
+          <z><noise type="gaussian"><mean>0</mean><stddev>0.021</stddev></noise></z>
+        </linear_acceleration>
+      </imu>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="lidar_link">
+    <sensor name="gpu_lidar" type="gpu_lidar">
+      <gz_frame_id>lidar_link</gz_frame_id>
+      <pose>0 0 0 0 0 0</pose>
+      <lidar>
+        <scan>
+          <horizontal>
+            <samples>1024</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.1459</min_angle>
+            <max_angle>3.1459</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>128</samples>
+            <resolution>1</resolution>
+            <min_angle>-0.52356</min_angle>
+            <max_angle>0.52356</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.3</min>
+          <max>50.0</max>
+          <resolution>0.01</resolution>
+        </range>
+      </lidar>
+      <topic>scan</topic>
+      <visualize>true</visualize>
+      <update_rate>10</update_rate>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="depth_camera_link">
+    <sensor name="rs_front" type="rgbd_camera">
+      <gz_frame_id>depth_camera_link</gz_frame_id>
+      <pose>0 0 0 0 0 0</pose>
+      <always_on>1</always_on>
+      <update_rate>10</update_rate>
+      <camera name="rs_front">
+        <horizontal_fov>1.50098</horizontal_fov>
+        <lens>
+          <intrinsics>
+            <fx>343.159</fx>
+            <fy>343.159</fy>
+            <cx>319.5</cx>
+            <cy>179.5</cy>
+            <s>0</s>
+          </intrinsics>
+        </lens>
+        <image>
+          <width>640</width>
+          <height>360</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.01</near>
+          <far>300.0</far>
+        </clip>
+      </camera>
+      <topic>rs_front</topic>
+      <visualize>true</visualize>
+    </sensor>
+  </gazebo>
+
+  <!-- Gazebo Plugins -->
+  <gazebo>
+    <plugin filename="gz-sim-ackermann-steering-system" name="gz::sim::systems::AckermannSteering">
+      <left_joint>Revolute_20</left_joint>
+      <right_joint>Revolute_21</right_joint>
+      <left_steering_joint>Revolute_22</left_steering_joint>
+      <right_steering_joint>Revolute_23</right_steering_joint>
+      <kingpin_width>0.755</kingpin_width>
+      <steering_limit>0.8</steering_limit>
+      <wheel_base>2.124</wheel_base>
+      <wheel_radius>0.277</wheel_radius>
+      <min_velocity>-15.0</min_velocity>
+      <max_velocity>15.0</max_velocity>
+      <topic>/cmd_vel</topic>
+    </plugin>
+    
+    <!--<plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
+      <publish_link_pose>true</publish_link_pose>
+      <publish_sensor_pose>true</publish_sensor_pose>
+      <publish_model_pose>false</publish_model_pose>
+      <use_pose_vector_msg>true</use_pose_vector_msg>
+    </plugin>-->
+
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>world</odom_frame>
+      <!-- Base frame adjusted to match the top-level link in the URDF -->
+      <robot_base_frame>base_link</robot_base_frame>
+      <odom_topic>/model/saye/odometry_world</odom_topic>
+      <tf_topic>/model/saye/tf</tf_topic>
+      <dimensions>3</dimensions>
+    </plugin>
+
+    <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+      <topic>joint_state</topic>
+    </plugin>  
+  </gazebo>
+
+</robot>

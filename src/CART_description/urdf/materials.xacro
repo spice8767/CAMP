@@ -5,4 +5,16 @@
   <color rgba="0.700 0.700 0.700 1.000"/>
 </material>
 
+<material name="safety_orange">
+  <color rgba="1.000 0.350 0.000 1.000"/>
+</material>
+
+<material name="canopy_white">
+  <color rgba="0.950 0.950 0.950 1.000"/>
+</material>
+
+<material name="rubber_black">
+  <color rgba="0.100 0.100 0.100 1.000"/>
+</material>
+
 </robot>

@@ -15,7 +15,7 @@
     <geometry>
       <mesh filename="file://$(find CART_description)/meshes/base_link.stl" scale="0.1 0.1 0.1" />
     </geometry>
-    <material name="silver" />
+    <material name="safety_orange" />
   </visual>
   <collision>
     <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
@@ -36,7 +36,7 @@
     <geometry>
       <mesh filename="file://$(find CART_description)/meshes/wheel_front_left_1.stl" scale="0.1 0.1 0.1" />
     </geometry>
-    <material name="silver" />
+    <material name="rubber_black" />
   </visual>
   <collision>
     <origin xyz="-0.38999999999999996 0.40109999999999996 -0.2943" rpy="0 0 0" />
@@ -57,7 +57,7 @@
     <geometry>
       <mesh filename="file://$(find CART_description)/meshes/wheel_front_right_1.stl" scale="0.1 0.1 0.1" />
     </geometry>
-    <material name="silver" />
+    <material name="rubber_black" />
   </visual>
   <collision>
     <origin xyz="0.3738 0.4007 -0.2946" rpy="0 0 0" />
@@ -78,7 +78,7 @@
     <geometry>
       <mesh filename="file://$(find CART_description)/meshes/top_1.stl" scale="0.1 0.1 0.1" />
     </geometry>
-    <material name="silver" />
+    <material name="canopy_white" />
   </visual>
   <collision>
     <origin xyz="-0.0036999999999999997 0.0723 -0.3302" rpy="0 0 0" />
@@ -99,7 +99,7 @@
     <geometry>
       <mesh filename="file://$(find CART_description)/meshes/wheel_back_left_1.stl" scale="0.1 0.1 0.1" />
     </geometry>
-    <material name="silver" />
+    <material name="rubber_black" />
   </visual>
   <collision>
     <origin xyz="-0.38839999999999997 -1.7233999999999998 -0.292" rpy="0 0 0" />
@@ -120,7 +120,7 @@
     <geometry>
       <mesh filename="file://$(find CART_description)/meshes/wheel_back_right_1.stl" scale="0.1 0.1 0.1" />
     </geometry>
-    <material name="silver" />
+    <material name="rubber_black" />
   </visual>
   <collision>
     <origin xyz="0.38939999999999997 -1.7224 -0.2942" rpy="0 0 0" />
@@ -141,7 +141,7 @@
     <geometry>
       <mesh filename="file://$(find CART_description)/meshes/Knuckle_left_1.stl" scale="0.1 0.1 0.1" />
     </geometry>
-    <material name="silver" />
+    <material name="rubber_black" />
   </visual>
   <collision>
     <origin xyz="-0.37 0.40109999999999996 -0.2943" rpy="0 0 0" />
@@ -162,7 +162,7 @@
     <geometry>
       <mesh filename="file://$(find CART_description)/meshes/knuckle_right_1.stl" scale="0.1 0.1 0.1" />
     </geometry>
-    <material name="silver" />
+    <material name="rubber_black" />
   </visual>
   <collision>
     <origin xyz="0.362 0.4007 -0.2946" rpy="0 0 0" />
@@ -222,4 +222,26 @@
   <limit upper="0.523599" lower="-0.523599" effort="100" velocity="100" />
 </joint>
 
-<gazebo><plugin filename="gz-sim-ackermann-steering-system" name="gz::sim::systems::AckermannSteering"><left_joint>Revolute 20</left_joint><right_joint>Revolute 21</right_joint><left_steering_joint>Revolute 22</left_steering_joint><right_steering_joint>Revolute 23</right_steering_joint><kingpin_width>0.755</kingpin_width><steering_limit>0.8</steering_limit><wheel_base>2.124</wheel_base><wheel_radius>0.277</wheel_radius><min_velocity>-5</min_velocity><max_velocity>5</max_velocity><topic>/cmd_vel</topic></plugin></gazebo></robot>
+<gazebo>
+  <plugin filename="gz-sim-ackermann-steering-system" name="gz::sim::systems::AckermannSteering">
+    <left_joint>Revolute 20</left_joint>
+    <right_joint>Revolute 21</right_joint>
+    <left_steering_joint>Revolute 22</left_steering_joint>
+    <right_steering_joint>Revolute 23</right_steering_joint>
+    <kingpin_width>0.755</kingpin_width>
+    <steering_limit>0.8</steering_limit>
+    <wheel_base>2.124</wheel_base>
+    <wheel_radius>0.277</wheel_radius>
+    <min_velocity>-5</min_velocity>
+    <max_velocity>5</max_velocity>
+    <topic>/cmd_vel</topic>
+  </plugin>
+
+  <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+    <odom_frame>world</odom_frame>
+    <robot_base_frame>base_link</robot_base_frame>
+    <odom_topic>/model/CART/odometry_world</odom_topic>
+    <dimensions>3</dimensions>
+  </plugin>
+</gazebo>
+</robot>
