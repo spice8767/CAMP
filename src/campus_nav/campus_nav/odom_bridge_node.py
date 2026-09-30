@@ -41,7 +41,9 @@ class OdomBridgeNode(Node):
         self.model_name = self.get_parameter('model_name').get_parameter_value().string_value
 
         # Load map for void recovery road snapping
-        default_osm = '/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm'
+        default_osm = next((p for p in ['/home/adarsh4our/CAMP/campus_with_junctions_and_stops.osm',
+                                        '/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm']
+                            if os.path.exists(p)), '/home/adarsh4our/CAMP/campus_with_junctions_and_stops.osm')
         self.campus = CampusMap(default_osm)
 
         # Publishers

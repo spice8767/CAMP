@@ -71,9 +71,9 @@ def generate_launch_description():
     campus_sdf = tmp_sdf.name
 
     # Updated OSM — prefer workspace root copy if present
-    default_osm = '/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm'
-    if not os.path.exists(default_osm):
-        default_osm = os.path.join(pkg_campus_nav, 'data', 'campus.osm')
+    default_osm = next((p for p in ['/home/adarsh4our/CAMP/campus_with_junctions_and_stops.osm',
+                                    '/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm']
+                        if os.path.exists(p)), os.path.join(pkg_campus_nav, 'data', 'campus.osm'))
 
     stops_yaml = os.path.join(pkg_campus_nav, 'config', 'campus_junctions_and_stops.yaml')
 

@@ -26,8 +26,12 @@ class CampusPlannerNode(Node):
 
         # Declare parameters
         pkg_share = get_package_share_directory('campus_nav') if 'campus_nav' in os.environ.get('AMENT_PREFIX_PATH', '') else ''
-        default_osm = '/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm' if os.path.exists('/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm') else (os.path.join(pkg_share, 'data', 'campus.osm') if pkg_share else '/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm')
-        default_yaml = os.path.join(pkg_share, 'config', 'campus_junctions_and_stops.yaml') if pkg_share else '/home/adarsh4our/CAMP A/src/campus_nav/config/campus_junctions_and_stops.yaml'
+        default_osm = next((p for p in ['/home/adarsh4our/CAMP/campus_with_junctions_and_stops.osm',
+                                        '/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm']
+                            if os.path.exists(p)), (os.path.join(pkg_share, 'data', 'campus.osm') if pkg_share else ''))
+        default_yaml = next((p for p in ['/home/adarsh4our/CAMP/src/campus_nav/config/campus_junctions_and_stops.yaml',
+                                         '/home/adarsh4our/CAMP A/src/campus_nav/config/campus_junctions_and_stops.yaml']
+                             if os.path.exists(p)), (os.path.join(pkg_share, 'config', 'campus_junctions_and_stops.yaml') if pkg_share else ''))
 
         from rcl_interfaces.msg import ParameterDescriptor
         dyn_desc = ParameterDescriptor(dynamic_typing=True)

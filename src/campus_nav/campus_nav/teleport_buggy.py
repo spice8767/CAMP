@@ -18,6 +18,7 @@ Usage:
   ros2 run campus_nav teleport_buggy --stop "SAB C" --flip
 """
 
+import os
 import sys
 import argparse
 import subprocess
@@ -28,7 +29,9 @@ from campus_nav.coord_bridge import nav_to_gz, gz_to_nav
 
 
 ROAD_SURFACE_Z = 0.60  # Road surface is at Z=0.30m + wheel radius 0.28m
-DEFAULT_OSM = '/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm'
+DEFAULT_OSM = next((p for p in ['/home/adarsh4our/CAMP/campus_with_junctions_and_stops.osm',
+                                '/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm']
+                    if os.path.exists(p)), '/home/adarsh4our/CAMP/campus_with_junctions_and_stops.osm')
 
 
 def get_current_gz_pose(model='saye'):

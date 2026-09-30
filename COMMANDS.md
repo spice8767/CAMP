@@ -7,7 +7,7 @@ This file contains all commands to build, launch, teleport, drive, and monitor t
 ## 1. Build Workspace
 Run after any code, URDF, or map changes:
 ```bash
-cd '/home/adarsh4our/CAMP A'
+cd '/home/adarsh4our/CAMP'
 source /opt/ros/jazzy/setup.bash
 colcon build --symlink-install
 ```
@@ -24,7 +24,7 @@ Launches Gazebo Harmonic (NVIDIA GPU offload), `saye` buggy (spawned on road at 
 
 ```bash
 source /opt/ros/jazzy/setup.bash
-source '/home/adarsh4our/CAMP A/install/setup.bash'
+source '/home/adarsh4our/CAMP/install/setup.bash'
 export DISPLAY=:1
 ros2 launch campus_nav full_simulation.launch.py
 ```
@@ -44,13 +44,13 @@ ros2 launch campus_nav full_simulation.launch.py
 
 ### Re-open / Standalone RViz (Standard Campus Nav):
 ```bash
-ros2 run rviz2 rviz2 -d "/home/adarsh4our/CAMP A/src/campus_nav/rviz/campus_nav.rviz" --ros-args -p use_sim_time:=true
+ros2 run rviz2 rviz2 -d "/home/adarsh4our/CAMP/src/campus_nav/rviz/campus_nav.rviz" --ros-args -p use_sim_time:=true
 ```
 
 ### Solo 3D LiDAR Point Cloud Map View (Raw 3D Points Only):
 To switch RViz to a dedicated dark view showing only the raw 3D LiDAR point cloud with rainbow elevation coloring:
 ```bash
-ros2 run rviz2 rviz2 -d "/home/adarsh4our/CAMP A/src/campus_nav/rviz/solo_lidar.rviz" --ros-args -p use_sim_time:=true
+ros2 run rviz2 rviz2 -d "/home/adarsh4our/CAMP/src/campus_nav/rviz/solo_lidar.rviz" --ros-args -p use_sim_time:=true
 ```
 
 ---
@@ -60,7 +60,7 @@ ros2 run rviz2 rviz2 -d "/home/adarsh4our/CAMP A/src/campus_nav/rviz/solo_lidar.
 ### Quick Orientation & 180° Turnaround (At Current Position):
 ```bash
 source /opt/ros/jazzy/setup.bash
-source '/home/adarsh4our/CAMP A/install/setup.bash'
+source '/home/adarsh4our/CAMP/install/setup.bash'
 
 # 1. Snap buggy exactly parallel to the nearest road lane:
 ros2 run campus_nav orient_buggy
@@ -115,7 +115,7 @@ When you publish a mission, the system operates as an **Autonomous Campus Shuttl
 
 ```bash
 source /opt/ros/jazzy/setup.bash
-source '/home/adarsh4our/CAMP A/install/setup.bash'
+source '/home/adarsh4our/CAMP/install/setup.bash'
 
 # SAB C to Chemistry Block:
 ros2 topic pub --once /campus/mission std_msgs/msg/String "{data: 'SAB C|Chemistry Block'}"
@@ -218,7 +218,7 @@ ros2 run campus_nav test_obstacle_spawner --remove
 Drive manually with keyboard GUI window:
 ```bash
 source /opt/ros/jazzy/setup.bash
-source '/home/adarsh4our/CAMP A/install/setup.bash'
+source '/home/adarsh4our/CAMP/install/setup.bash'
 export DISPLAY=:1
 ros2 run campus_nav wasd_teleop
 ```
@@ -228,9 +228,9 @@ ros2 run campus_nav wasd_teleop
 ## 8. List All 32 Campus Stops
 ```bash
 python3 -c "
-import sys; sys.path.insert(0, '/home/adarsh4our/CAMP A/src/campus_nav')
+import sys; sys.path.insert(0, '/home/adarsh4our/CAMP/src/campus_nav')
 from campus_nav.osm_loader import CampusMap
-c = CampusMap('/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm')
+c = CampusMap('/home/adarsh4our/CAMP/campus_with_junctions_and_stops.osm')
 print('\n'.join(f' - {name}' for name in sorted(c.stops.keys())))
 "
 ```
