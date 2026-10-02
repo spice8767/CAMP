@@ -47,3 +47,15 @@ This document outlines the architectural shift from the legacy manual control sy
 **Now:**
 - Those legacy nodes are removed.
 - The launch file now executes `nav2_lifecycle_manager`, `nav2_controller`, and `nav2_adapter_node`, booting up the entire navigation stack in sync with the physics engine.
+
+## 6. Testing Status (What is verified vs untested)
+**✅ Tested & Verified:**
+- Nav2 stack successfully boots up alongside Gazebo without crashing.
+- `nav2_adapter_node` successfully translates custom `/campus/target_path` trajectories into Action Goals.
+- `RegulatedPurePursuitController` successfully commands the buggy to follow complex routes (e.g. SAB C to Auditorium) using the virtual `nav_base_link` frame.
+- The 3D LiDAR is correctly feeding point clouds into the Nav2 Local Costmap.
+- Navigation tested on **empty roads**.
+
+**⚠️ Untested / Pending Verification:**
+- **Dynamic Obstacle Avoidance:** While the 3D LiDAR feeds the Local Costmap, we have not yet spawned dynamic obstacles (pedestrians, speed breakers) to verify if Nav2 successfully scales down velocity or routes around them.
+- **Recovery Behaviors:** We have not tested what Nav2 does if the path is completely blocked (e.g., spinning, reversing, or clearing the costmap).
