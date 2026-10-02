@@ -43,3 +43,23 @@ Thumbs.db
 *.bak
 *.tmp
 *.log
+# Environment files (added by /git)
+.env
+.env.local
+.env.*.local
+# Environment files & dev scratchpads (added by /git)
+
+*audit_2026-10-01_02-49-32.log*
+*audit_2026-10-02_22-16-53.log*
+*audit_2026-10-02_22-21-13.log*
+*audit_2026-10-01_15-30-02.log*
+*audit_2026-10-02_22-23-59.log*
+*audit_2026-09-30_12-01-28.log*
+*audit_2026-10-02_22-38-30.log*
+*audit_2026-10-02_22-35-11.log*
+*audit_2026-10-02_22-31-02.log*
+*audit_2026-10-01_02-51-51.log*
+*audit_2026-10-01_03-02-50.log*
+*audit_2026-10-01_15-28-11.log*
+*audit_2026-10-02_22-42-04.log*
+*audit_2026-09-30_12-10-10.log*

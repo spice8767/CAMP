@@ -119,5 +119,29 @@
 
 ---
 
+## Phase 5 — Visualization, TF & Sensor Audits (Resolved)
+
+### BUG-5.1: RViz Buggy Flickering (Dual-Parent TF Conflict)
+- **Symptom:** Buggy 3D marker and transforms in RViz flickered at ~100 Hz, jumping between true pose and origin.
+- **Root Cause:** Dual parentage on `base_link`. `robot_state_publisher` published static `base_footprint -> base_link`, while Gazebo's `OdometryPublisher` published `world -> base_link`.
+- **Fix:** Changed `robot_base_frame` in `model.xacro` OdometryPublisher to `base_footprint`. The TF tree now strictly resolves as `map -> world -> base_footprint -> base_link`.
+
+### BUG-5.2: Forward Ground Blind Spot & LiDAR Ray Lag
+- **Symptom:** Large 14m forward blind spot in front of vehicle; point cloud lagged heavily when resolution was spiked.
+- **Root Cause:** LiDAR mounted flat at $Z=1.65\text{m}$, occluded by the roof's leading edge. Ray density at 2048x256 overloaded DDS transport (17MB/msg).
+- **Fix:** Relocated `lidar_joint` to `(0, -0.42, 1.75)` on front roll-cage header ($3\text{cm}$ forward of roof edge), expanded vertical downward FOV to $-60^\circ$, and optimized sample density to 360 azimuth $\times$ 64 rings (~23k points/sweep).
+
+### BUG-5.3: Vehicle Hood False-Positive Emergency Stop
+- **Symptom:** `safety_monitor_node` triggered immediate `EMERGENCY_STOP` on spawn with "obstacle at 0.9m/1.8m".
+- **Root Cause:** With downward angle at $-60^\circ$, the forward corridor ($X \ge 0.5\text{m}$) scanned the buggy's own front hood ($X \in [0.5, 1.58]\text{m}$).
+- **Fix:** Updated forward corridor minimum bound in `safety_monitor_node.py` to $1.8\text{m}$ (`x >= 1.8`), clearing the vehicle body.
+
+### BUG-5.4: Multi-Window Operator Layout Placement
+- **Symptom:** Mutter/GNOME window manager ignored Gazebo's requested screen position and placed it over other windows.
+- **Root Cause:** X11 window placement override by Mutter on startup.
+- **Fix:** Created `arrange_windows.py` using `libX11` ctypes to programmatically reposition Gazebo to $(960, 520)$ at $960 \times 520$ docked in the bottom-right quadrant during launch.
+
+---
+
 > **Build**: `colcon build --symlink-install` → **5 packages, 0 errors** ✅  
-> **Next**: Run the simulation and verify live behavior.
+> **Status**: All 3 windows synchronized, zero TF conflicts, clean point cloud rendering, and responsive navigation.

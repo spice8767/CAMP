@@ -37,6 +37,7 @@ setup(
             'orient_buggy             = campus_nav.teleport_buggy:orient_main',
             'wasd_teleop              = campus_nav.wasd_teleop:main',
             'test_obstacle_spawner    = campus_nav.test_obstacle_spawner:main',
+            'arrange_windows          = campus_nav.arrange_windows:arrange',
         ],
     },
 )

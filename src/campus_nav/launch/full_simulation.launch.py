@@ -313,4 +313,10 @@ def generate_launch_description():
         TimerAction(period=2.0, actions=[audit_logger_node]),
         TimerAction(period=3.0, actions=[rviz_map_node]),
         TimerAction(period=3.5, actions=[rviz_lidar_node]),
+        TimerAction(period=4.0, actions=[Node(
+            package='campus_nav',
+            executable='arrange_windows',
+            name='arrange_windows',
+            output='screen'
+        )]),
     ])

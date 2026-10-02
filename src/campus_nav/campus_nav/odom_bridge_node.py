@@ -142,16 +142,9 @@ class OdomBridgeNode(Node):
         t.transform.rotation.w = 1.0
         self.tf_broadcaster.sendTransform(t)
 
-        tb = TransformStamped()
-        tb.header.stamp = now
-        tb.header.frame_id = 'map'
-        tb.child_frame_id = 'base_link'
-        tb.transform.translation.x = nav_x
-        tb.transform.translation.y = nav_y
-        tb.transform.translation.z = gz_z
-        tb.transform.rotation = orientation_q
-        self.tf_broadcaster.sendTransform(tb)
-        
+        # Removed conflicting map -> base_link TF broadcast
+        # since Gazebo publishes world -> base_footprint -> base_link, and we publish map -> world.
+
         t_nav = TransformStamped()
         t_nav.header.stamp = now
         t_nav.header.frame_id = 'map'

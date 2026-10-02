@@ -76,7 +76,7 @@
 * **File:** `campus_nav/odom_bridge_node.py`
 * **Function:** Metric and TF frame bridge connecting Gazebo's world frame to the planner's map frame.
 * **Calibration:** Translates between Gazebo world coords and planner map coords via calibrated offset ($X = 802.0\,\text{m}, Y = 679.7\,\text{m}$).
-* **TF Tree:** Broadcasts `map -> world -> base_link -> top_1 -> lidar_link` ensuring clock and TF continuity with zero loop cycles.
+* **TF Tree:** Broadcasts `map -> world -> base_footprint -> base_link -> top_1 -> lidar_link` ensuring clock and TF continuity with zero loop cycles or multiple-parent conflicts.
 * **Void Catch Supervisor:** Automatically detects if the buggy drops below $Z = -0.5\,\text{m}$ (accidental cliff fall) and safely teleports it back to the nearest road node.
 
 ### 6. `orient_buggy` & `teleport_buggy`
@@ -87,7 +87,11 @@
   * `ros2 run campus_nav orient_buggy --flip`: Performs an instant $180^\circ$ U-turn facing the opposite road direction.
   * `ros2 run campus_nav teleport_buggy --stop "<STOP_NAME>"`: Instantly teleports the buggy to any of the 32 campus stops, snapped parallel to the road.
 
-### 7. `test_obstacle_spawner`
+### 7. `arrange_windows`
+* **File:** `campus_nav/arrange_windows.py`
+* **Function:** X11 window placement manager via `libX11` ctypes. Automatically detects and docks the Gazebo simulation window to the bottom-right quadrant ($960 \times 520$ at $X=960, Y=520$) during launch.
+
+### 8. `test_obstacle_spawner`
 * **File:** `campus_nav/test_obstacle_spawner.py`
 * **Function:** Spawns physical obstacles in Gazebo for reactive testing:
   * `--type human`: Spawns a standing pedestrian in front of the vehicle.
@@ -112,7 +116,7 @@
 | `/campus/safety_corridor` | `visualization_msgs/Marker` | Dynamic 3D lookahead corridor bounding box |
 | `/campus/safety_threats` | `visualization_msgs/MarkerArray` | Clustered obstacle return points |
 | `/cmd_vel` | `geometry_msgs/Twist` | Velocity and steering commands to Gazebo |
-| `/cloud` | `sensor_msgs/PointCloud2` | 3D LiDAR point cloud (1024 azimuth x 128 rings) |
+| `/cloud` | `sensor_msgs/PointCloud2` | 3D LiDAR point cloud (360 azimuth x 64 rings) |
 | `/real_sense/image_raw` | `sensor_msgs/Image` | Forward RealSense RGB camera feed |
 
 ---

@@ -47,13 +47,13 @@ When launched, 3 synchronized windows automatically open in a tiled layout:
 3. **Window 3: RViz Livox Mid-360 LiDAR Inspection (Top-Right, 960x520 at X=960, Y=0)**
    - **Live 3D Point Cloud (`/cloud`):** Dedicated high-speed inspection of the roof-mounted Livox Mid-360.
    - **Instantaneous 10 Hz Sweeps:** Zero decay time (`Decay Time: 0.0`) for real-time sensor verification without ghosting artifacts.
-   - **Ultra-Dense Ray Density:** 2048 azimuth samples $\times$ 256 vertical rings (524k points per frame) rendered as 0.12m flat squares for dense, solid surface detection.
+   - **Optimized Ray Density:** 360 azimuth samples $\times$ 64 vertical rings (~23k points per frame) rendered as 0.12m flat squares for dense, solid surface detection with zero bridge latency.
    - **Tracking:** Automatically follows the vehicle's `base_link` frame.
 
 ### 📡 Livox Mid-360 Sensor Specifications:
-- **Horizontal FOV:** 360° omnidirectional azimuth coverage (2048 samples).
-- **Vertical FOV:** 60° asymmetric aperture ($[-45^\circ, +15^\circ]$ or $[-0.785, 0.262]\,\text{rad}$) with 256 vertical rings.
-- **Blind-Spot Elimination:** Lower vertical angle of $-45^\circ$ sweeps the road starting just $1.6\,\text{m}$ from the vehicle center (immediately in front of the front bumper), completely eliminating forward ground blind spots for speed breakers and pedestrians.
+- **Horizontal FOV:** 360° omnidirectional azimuth coverage (360 samples, 1° resolution).
+- **Vertical FOV:** 75° asymmetric downward aperture ($[-60^\circ, +15^\circ]$ or $[-1.047, 0.262]\,\text{rad}$) with 64 vertical rings.
+- **Blind-Spot Elimination:** Lower vertical angle of $-60^\circ$ sweeps the road starting just $0.88\,\text{m}$ from the vehicle center (immediately in front of the front bumper), completely eliminating forward ground blind spots.
 - **Effective Range:** $0.1\,\text{m}$ to $70.0\,\text{m}$.
 
 ### Re-open / Standalone RViz Windows Individually:

@@ -305,13 +305,13 @@
       <lidar>
         <scan>
           <horizontal>
-            <samples>2048</samples>
+            <samples>360</samples>
             <resolution>1</resolution>
             <min_angle>-3.14159</min_angle>
             <max_angle>3.14159</max_angle>
           </horizontal>
           <vertical>
-            <samples>256</samples>
+            <samples>64</samples>
             <resolution>1</resolution>
             <min_angle>-1.047198</min_angle>
             <max_angle>0.261799</max_angle>
@@ -386,8 +386,8 @@
 
     <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
       <odom_frame>world</odom_frame>
-      <!-- Base frame adjusted to match the top-level link in the URDF -->
-      <robot_base_frame>base_link</robot_base_frame>
+      <!-- Base frame adjusted to match the true top-level link in the URDF -->
+      <robot_base_frame>base_footprint</robot_base_frame>
       <odom_topic>/model/saye/odometry_world</odom_topic>
       <tf_topic>/model/saye/tf</tf_topic>
       <dimensions>3</dimensions>
