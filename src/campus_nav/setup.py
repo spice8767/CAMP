@@ -31,6 +31,7 @@ setup(
             'path_follower_node       = campus_nav.path_follower_node:main',
             'safety_monitor_node      = campus_nav.safety_monitor_node:main',
             'mission_controller_node  = campus_nav.mission_controller_node:main',
+            'audit_logger             = campus_nav.audit_logger_node:main',
             'teleport_buggy           = campus_nav.teleport_buggy:main',
             'orient_buggy             = campus_nav.teleport_buggy:orient_main',
             'wasd_teleop              = campus_nav.wasd_teleop:main',

@@ -4,10 +4,9 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /3D LiDAR (/cloud)1
         - /RealSense Camera Feed1
-        - /LiDAR 2D BEV Feed1
         - /Road Network1
+        - /Campus Stops1
         - /saye Buggy (Live 3D Model)1
       Splitter Ratio: 0.55
     Tree Height: 550
@@ -132,37 +131,6 @@ Visualization Manager:
         Value: /campus/vehicle_marker
       Name: saye Buggy (Live 3D Model)
       Value: true
-    - Alpha: 1.0
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 8
-        Min Value: -1
-        Value: true
-      Axis: Z
-      Class: rviz_default_plugins/PointCloud2
-      Color: 255; 255; 255
-      Color Transformer: AxisColor
-      Decay Time: 15.0
-      Enabled: false
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Min Color: 0; 0; 0
-      Name: 3D LiDAR (/cloud)
-      Position Transformer: XYZ
-      Selectable: true
-      Size (Pixels): 4
-      Size (m): 0.08
-      Style: Flat Squares
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        Filter size: 10
-        History Policy: Keep Last
-        Reliability Policy: Best Effort
-        Value: /cloud
-      Use Fixed Frame: true
-      Use rainbow: true
-      Value: false
     - Class: rviz_default_plugins/Marker
       Enabled: true
       Topic:
@@ -197,20 +165,6 @@ Visualization Manager:
         Reliability Policy: Best Effort
         Value: /real_sense/image_raw
       Value: true
-    - Class: rviz_default_plugins/Image
-      Enabled: true
-      Max Value: 1
-      Median window: 5
-      Min Value: 0
-      Name: LiDAR 2D BEV Feed
-      Normalize Range: false
-      Topic:
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /campus/lidar_bev_image
-      Value: true
   Enabled: true
   Global Options:
     Background Color: 30; 33; 39
@@ -238,37 +192,52 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Class: rviz_default_plugins/Orbit
-      Distance: 45
+      Class: rviz_default_plugins/ThirdPersonFollower
+      Distance: 32.0
       Focal Point:
-        X: 817.0
-        Y: 725.0
+        X: 0.0
+        Y: 0.0
         Z: 1.0
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05
       Invert Z Axis: false
-      Name: Vehicle & LiDAR View
+      Name: Third Person Buggy View
       Near Clip Distance: 0.1
       Pitch: 0.65
-      Target Frame: <Fixed Frame>
-      Value: Orbit (rviz_default_plugins)
-      Yaw: 4.71
+      Target Frame: base_link
+      Value: ThirdPersonFollower (rviz_default_plugins)
+      Yaw: 1.5708
     Saved:
-      - Class: rviz_default_plugins/Orbit
-        Distance: 45
+      - Class: rviz_default_plugins/ThirdPersonFollower
+        Distance: 32.0
         Focal Point:
-          X: 817.0
-          Y: 725.0
+          X: 0.0
+          Y: 0.0
           Z: 1.0
         Focal Shape Fixed Size: true
         Focal Shape Size: 0.05
         Invert Z Axis: false
-        Name: Vehicle & LiDAR View
+        Name: Third Person Buggy View
         Near Clip Distance: 0.1
         Pitch: 0.65
-        Target Frame: <Fixed Frame>
+        Target Frame: base_link
+        Value: ThirdPersonFollower (rviz_default_plugins)
+        Yaw: 1.5708
+      - Class: rviz_default_plugins/Orbit
+        Distance: 45.0
+        Focal Point:
+          X: 0.0
+          Y: 0.0
+          Z: 1.0
+        Focal Shape Fixed Size: true
+        Focal Shape Size: 0.05
+        Invert Z Axis: false
+        Name: Orbit Buggy Follower
+        Near Clip Distance: 0.1
+        Pitch: 0.65
+        Target Frame: base_link
         Value: Orbit (rviz_default_plugins)
-        Yaw: 4.71
+        Yaw: 1.5708
       - Class: rviz_default_plugins/Orbit
         Distance: 600
         Focal Point:
@@ -289,9 +258,9 @@ Window Geometry:
     collapsed: false
   RealSense Camera Feed:
     collapsed: false
-  LiDAR 2D BEV Feed:
-    collapsed: false
   Views:
     collapsed: false
-  Height: 920
-  Width: 1450
+  Height: 1040
+  Width: 960
+  X: 0
+  Y: 0

@@ -50,37 +50,41 @@ source /opt/ros/jazzy/setup.bash
 colcon build --symlink-install
 ```
 
-### 2. Launch Complete Simulation (One Command)
-Launches Gazebo Harmonic (with NVIDIA GPU offload), spawns the `saye` electric buggy on the road at **SAB C**, starts all sensor bridges, odometry transforms, A* planner, Pure Pursuit follower, safety monitor, and RViz2:
+### 2. Launch Complete Simulation (One Command — 3 Windows)
+Launches Gazebo Harmonic (with NVIDIA GPU offload), spawns the `saye` electric buggy on the road at **SAB C**, starts all sensor bridges, odometry transforms, A* planner, Pure Pursuit follower, safety monitor, and automatically arranges 3 synchronized operator windows:
 
 ```bash
 source /opt/ros/jazzy/setup.bash
-source install/setup.bash
+source /home/adarsh4our/CAMP\ A/install/setup.bash  # or: source install/setup.bash
 export DISPLAY=:1
 ros2 launch campus_nav full_simulation.launch.py
 ```
 
 ---
 
-## 🖥️ RViz2 Visualizer Dashboard
+## 🖥️ 3-Window Multi-Viewport Operator Dashboard
 
-The RViz configuration (`campus_nav.rviz`) provides a clean, information-rich operator interface:
+Running the single launch command automatically opens and arranges three specialized windows across a standard 1080p display:
 
-1. **Main 3D Viewport:**
-   * Clean campus road network map and all 32 named stop stations (`SAB S`, `LOC`, `Ravi Back`, etc.).
-   * Active 3.8m wide solid road carpet ribbon (`/campus/route_ribbon`) showing exact drivable lane boundaries.
-   * Trajectory centerline and live 3D visual `saye` buggy model.
-   * *(3D point cloud points are kept off the main 3D map to eliminate visual clutter).*
+1. **Window 1: Gazebo Harmonic Sim (Bottom-Right, 960x520 at X=960, Y=520)**
+   - High-fidelity 3D simulation of campus roads, physics engine, obstacle spawners, and vehicle dynamics.
+   - GPU-accelerated rendering with direct NVIDIA hardware offload.
 
-2. **Side Panel 1 — RealSense Camera Feed:**
-   * Live forward-facing RGB camera stream (`/real_sense/image_raw`).
+2. **Window 2: RViz Campus Map & RealSense Camera Feed (Left Half, 960x1040 at X=0, Y=0)**
+   - **Main 3D Viewport:** Third-person camera tracking (`base_link`) following the buggy, showing the clean vector road network, all 32 campus stops (`SAB S`, `LOC`, etc.), active 3.8m route ribbon carpet, path centerline, and live 3D `saye` buggy model. *(All LiDAR point feeds and 2D BEV panels are completely removed from Window 2).*
+   - **Side Panel — RealSense Camera Feed:** Live RGB forward-facing stream on `/real_sense/image_raw`.
 
-3. **Side Panel 2 — LiDAR 2D BEV Tactical Radar Feed:**
-   * Real-time top-down radar stream (`/campus/lidar_bev_image`) generated directly from the 3D LiDAR cloud.
-   * $5\,\text{m}, 10\,\text{m}, 15\,\text{m}, 20\,\text{m}$ concentric distance rings.
-   * Color-coded classification: Flat road (cyan), speed bumps (bright yellow), obstacles/pedestrians (bright red).
-   * Dynamic safety corridor bounding box and vehicle footprint with heading vector.
-   * Real-time HUD banner displaying current safety state (`CLEAR` / `SLOWDOWN_BUMP` / `EMERGENCY_STOP`), speed, and obstacle proximity.
+3. **Window 3: RViz Livox Mid-360 LiDAR Cloud Inspection (Top-Right, 960x520 at X=960, Y=0)**
+   - **Live 3D Point Cloud (`/cloud`):** Dedicated high-speed inspection of the roof-mounted Livox Mid-360.
+   - **Instantaneous 10 Hz Sweeps:** Zero decay time (`Decay Time: 0.0`) for real-time sensor verification without ghosting artifacts.
+   - **Ultra-Dense Ray Density:** 2048 azimuth samples $\times$ 256 vertical rings (524,288 rays per frame) rendered as 0.12m flat squares for solid, dense surface mapping.
+   - **Coloring & Target:** AxisColor rainbow elevation mapping in dark tactical theme, dynamically centered on vehicle `base_link`.
+
+### 📡 Livox Mid-360 Sensor Specifications
+- **Horizontal FOV:** 360° omnidirectional azimuth coverage (2048 samples).
+- **Vertical FOV:** 60° asymmetric aperture ($[-45^\circ, +15^\circ]$ or $[-0.785, 0.262]\,\text{rad}$) with 256 vertical rings.
+- **Blind-Spot Elimination:** Lower vertical angle of $-45^\circ$ sweeps the road starting just $1.6\,\text{m}$ from the vehicle center (immediately in front of the front bumper), completely eliminating forward ground blind spots for speed breakers and pedestrians.
+- **Effective Range:** $0.1\,\text{m}$ to $70.0\,\text{m}$.
 
 ---
 

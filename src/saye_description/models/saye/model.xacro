@@ -263,7 +263,7 @@
   </joint>
 
   <joint name="lidar_joint" type="fixed">
-    <origin xyz="0 0 1.65" rpy="0 0 -1.5707963" />
+    <origin xyz="0 -0.42 1.75" rpy="0 0 -1.5707963" />
     <parent link="top_1" />
     <child link="lidar_link" />
   </joint>
@@ -298,27 +298,28 @@
   </gazebo>
 
   <gazebo reference="lidar_link">
+    <!-- Livox Mid-360 LiDAR (360° horizontal x 75° optimal vertical FOV, blind-spot eliminated) -->
     <sensor name="gpu_lidar" type="gpu_lidar">
       <gz_frame_id>lidar_link</gz_frame_id>
       <pose>0 0 0 0 0 0</pose>
       <lidar>
         <scan>
           <horizontal>
-            <samples>1024</samples>
+            <samples>2048</samples>
             <resolution>1</resolution>
-            <min_angle>-3.1459</min_angle>
-            <max_angle>3.1459</max_angle>
+            <min_angle>-3.14159</min_angle>
+            <max_angle>3.14159</max_angle>
           </horizontal>
           <vertical>
-            <samples>128</samples>
+            <samples>256</samples>
             <resolution>1</resolution>
-            <min_angle>-0.52356</min_angle>
-            <max_angle>0.52356</max_angle>
+            <min_angle>-1.047198</min_angle>
+            <max_angle>0.261799</max_angle>
           </vertical>
         </scan>
         <range>
-          <min>0.3</min>
-          <max>50.0</max>
+          <min>0.1</min>
+          <max>70.0</max>
           <resolution>0.01</resolution>
         </range>
       </lidar>

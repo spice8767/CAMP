@@ -19,6 +19,7 @@ Then in a new terminal, publish a mission:
 """
 
 import os
+import subprocess
 import tempfile
 import xacro
 from ament_index_python.packages import get_package_share_directory
@@ -34,6 +35,10 @@ from os.path import join
 
 
 def generate_launch_description():
+    # ── Pre-launch cleanup: terminate any lingering Gazebo processes ───────────
+    # Prevents multiple Gazebo GUI windows from opening.
+    subprocess.run(['pkill', '-9', '-f', 'gz sim'], capture_output=True)
+    subprocess.run(['killall', '-9', 'gz-sim-server', 'gz-sim-gui'], capture_output=True)
 
     # ── Package paths ──────────────────────────────────────────────────────────
     pkg_campus_nav    = get_package_share_directory('campus_nav')
@@ -45,6 +50,7 @@ def generate_launch_description():
     saye_xacro        = os.path.join(pkg_saye, 'models', 'saye', 'model.xacro')
     bridge_config     = os.path.join(pkg_saye_bringup, 'config', 'ros_gz_bridge.yaml')
     campus_rviz       = os.path.join(pkg_campus_nav, 'rviz', 'campus_nav.rviz')
+    livox_rviz        = os.path.join(pkg_campus_nav, 'rviz', 'livox_mid360.rviz')
 
     # ── Set GZ_SIM_RESOURCE_PATH at Python level so ALL subprocesses inherit it.
     #    SetEnvironmentVariable() launch action is unreliable for IncludeLaunchDescription.
@@ -171,12 +177,28 @@ def generate_launch_description():
         }]
     )
 
-    # ── RViz (delayed to let planner publish first) ────────────────────────────
-    rviz_node = Node(
+    # ── Window 2: RViz Campus Map & RealSense Camera Feed (delayed) ───────────
+    rviz_map_node = Node(
         package='rviz2',
         executable='rviz2',
-        name='rviz2',
+        name='rviz2_campus_map',
         arguments=['-d', campus_rviz],
+        parameters=[{'use_sim_time': True}],
+        output='screen',
+        additional_env={
+            '__NV_PRIME_RENDER_OFFLOAD': '1',
+            '__GLX_VENDOR_LIBRARY_NAME': 'nvidia',
+            '__GL_SYNC_TO_VBLANK': '0',
+            'vblank_mode': '0'
+        }
+    )
+
+    # ── Window 3: RViz Livox Mid-360 LiDAR Cloud Inspection (delayed) ─────────
+    rviz_lidar_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2_livox_lidar',
+        arguments=['-d', livox_rviz],
         parameters=[{'use_sim_time': True}],
         output='screen',
         additional_env={
@@ -237,6 +259,15 @@ def generate_launch_description():
         parameters=[{'osm_file': default_osm, 'use_sim_time': True}]
     )
 
+    # ── Audit Logger (Safety-critical stack flight recorder) ───────────────────
+    audit_logger_node = Node(
+        package='campus_nav',
+        executable='audit_logger',
+        name='audit_logger',
+        output='screen',
+        parameters=[{'use_sim_time': True}]
+    )
+
     # ── Assemble launch description ────────────────────────────────────────────
     return LaunchDescription([
         # Environment variables first
@@ -259,5 +290,7 @@ def generate_launch_description():
         TimerAction(period=2.0, actions=[safety_monitor_node]),
         TimerAction(period=2.0, actions=[path_follower_node]),
         TimerAction(period=2.0, actions=[mission_controller_node]),
-        TimerAction(period=3.0, actions=[rviz_node]),
+        TimerAction(period=2.0, actions=[audit_logger_node]),
+        TimerAction(period=3.0, actions=[rviz_map_node]),
+        TimerAction(period=3.5, actions=[rviz_lidar_node]),
     ])

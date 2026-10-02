@@ -128,7 +128,7 @@ class OdomBridgeNode(Node):
         odom_msg.pose.pose.orientation = orientation_q
         self.odom_pub.publish(odom_msg)
 
-        # ── 4b. Broadcast TF: map -> world (connects Gazebo world to planner map frame) ───
+        # ── 4b. Broadcast TF: map -> world & map -> base_link ──────────────────
         t = TransformStamped()
         t.header.stamp = now
         t.header.frame_id = 'map'
@@ -142,31 +142,37 @@ class OdomBridgeNode(Node):
         t.transform.rotation.w = 1.0
         self.tf_broadcaster.sendTransform(t)
 
-        # ── 5. Publish 3D High-Contrast Vehicle Marker for RViz ────────────────
-        self._publish_vehicle_markers(nav_x, nav_y, gz_z, driving_yaw, now)
+        tb = TransformStamped()
+        tb.header.stamp = now
+        tb.header.frame_id = 'map'
+        tb.child_frame_id = 'base_link'
+        tb.transform.translation.x = nav_x
+        tb.transform.translation.y = nav_y
+        tb.transform.translation.z = gz_z
+        tb.transform.rotation = orientation_q
+        self.tf_broadcaster.sendTransform(tb)
 
-    def _publish_vehicle_markers(self, x, y, z, yaw, stamp):
-        """Constructs and publishes a 3D high-visibility buggy marker in RViz."""
+        # ── 5. Publish 3D High-Contrast Vehicle Marker for RViz ────────────────
+        self._publish_vehicle_markers(now)
+
+    def _publish_vehicle_markers(self, stamp):
+        """Constructs and publishes a 3D high-visibility buggy marker in RViz (attached to base_link)."""
         ma = MarkerArray()
-        qx, qy, qz, qw = quaternion_from_yaw(yaw)
 
         # 1. Main Chassis (Fluorescent Orange)
         body = Marker()
-        body.header.frame_id = 'map'
+        body.header.frame_id = 'base_link'
         body.header.stamp = stamp
         body.ns = 'buggy'
         body.id = 0
         body.type = Marker.CUBE
         body.action = Marker.ADD
-        body.pose.position.x = x
-        body.pose.position.y = y
+        body.pose.position.x = 0.0
+        body.pose.position.y = 0.60
         body.pose.position.z = 0.40
-        body.pose.orientation.x = qx
-        body.pose.orientation.y = qy
-        body.pose.orientation.z = qz
-        body.pose.orientation.w = qw
-        body.scale.x = 2.4  # Length
-        body.scale.y = 1.3  # Width
+        body.pose.orientation.w = 1.0
+        body.scale.x = 1.3  # Width along X
+        body.scale.y = 2.4  # Length along Y
         body.scale.z = 0.5  # Height
         body.color.r = 1.0
         body.color.g = 0.35
@@ -181,12 +187,12 @@ class OdomBridgeNode(Node):
         roof.id = 1
         roof.type = Marker.CUBE
         roof.action = Marker.ADD
-        roof.pose.position.x = x
-        roof.pose.position.y = y
+        roof.pose.position.x = 0.0
+        roof.pose.position.y = 0.60
         roof.pose.position.z = 1.30
-        roof.pose.orientation = body.pose.orientation
-        roof.scale.x = 1.7
-        roof.scale.y = 1.2
+        roof.pose.orientation.w = 1.0
+        roof.scale.x = 1.2
+        roof.scale.y = 1.7
         roof.scale.z = 0.08
         roof.color.r = 0.95
         roof.color.g = 0.95
@@ -194,20 +200,20 @@ class OdomBridgeNode(Node):
         roof.color.a = 0.95
         ma.markers.append(roof)
 
-        # 3. Heading Arrow (Bright Yellow)
+        # 3. Heading Arrow (Bright Yellow, points straight forward along -Y through the front bumper)
         arrow = Marker()
         arrow.header = body.header
         arrow.ns = 'buggy'
         arrow.id = 2
         arrow.type = Marker.ARROW
         arrow.action = Marker.ADD
-        arrow.pose.position.x = x
-        arrow.pose.position.y = y
-        arrow.pose.position.z = 0.70
-        arrow.pose.orientation = body.pose.orientation
-        arrow.scale.x = 2.0  # Arrow length
-        arrow.scale.y = 0.35 # Arrow shaft width
-        arrow.scale.z = 0.35 # Arrow head height
+        arrow.points = [
+            Point(x=0.0, y=0.0, z=0.70),
+            Point(x=0.0, y=-2.0, z=0.70)
+        ]
+        arrow.scale.x = 0.25 # Shaft diameter
+        arrow.scale.y = 0.50 # Head diameter
+        arrow.scale.z = 0.40 # Head length
         arrow.color.r = 1.0
         arrow.color.g = 1.0
         arrow.color.b = 0.0
@@ -221,8 +227,8 @@ class OdomBridgeNode(Node):
         label.id = 3
         label.type = Marker.TEXT_VIEW_FACING
         label.action = Marker.ADD
-        label.pose.position.x = x
-        label.pose.position.y = y
+        label.pose.position.x = 0.0
+        label.pose.position.y = 0.0
         label.pose.position.z = 1.85
         label.scale.z = 1.0
         label.text = "saye Buggy"

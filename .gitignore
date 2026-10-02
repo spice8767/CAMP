@@ -27,6 +27,8 @@ frames*.pdf
 
 # ── Temporary Previews & Scratch HTML ──
 *.html
+test_suite/reports/
+test_suite/screenshots/
 
 # ── Editor & OS Metadata ──
 .vscode/

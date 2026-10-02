@@ -56,14 +56,6 @@ class CampusPlannerNode(Node):
         self.campus = CampusMap(osm_file, stops_file)
         self.get_logger().info(f"Loaded {len(self.campus.main_nodes)} road nodes, {len(self.campus.junctions)} junctions, {len(self.campus.stops)} stops.")
 
-        # Broadcast static identity TF for map frame to ensure RViz has valid TF
-        self.tf_broadcaster = StaticTransformBroadcaster(self)
-        tf_msg = TransformStamped()
-        tf_msg.header.stamp = self.get_clock().now().to_msg()
-        tf_msg.header.frame_id = self.frame_id
-        tf_msg.child_frame_id = 'base_link'
-        tf_msg.transform.rotation.w = 1.0
-        self.tf_broadcaster.sendTransform(tf_msg)
 
         # Publishers
         self.path_pub = self.create_publisher(Path, '/campus/global_path', 10)

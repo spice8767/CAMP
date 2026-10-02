@@ -19,38 +19,50 @@ colcon build --symlink-install --packages-select campus_nav saye_description say
 
 ---
 
-## 2. Launch Entire Simulation (One Command)
-Launches Gazebo Harmonic (NVIDIA GPU offload), `saye` buggy (spawned on road at SAB C), `ros_gz_bridge`, A* planner, RViz2, odometry bridge, Pure Pursuit follower, safety monitor (with 2D LiDAR radar feed), and mission controller:
+## 2. Launch Entire Simulation (One Command — 3 Windows)
+Launches Gazebo Harmonic (NVIDIA GPU offload), `saye` buggy (spawned on road at SAB C), `ros_gz_bridge`, A* planner, RViz2 (Map & Camera), RViz2 (Livox Mid-360 LiDAR Cloud), odometry bridge, Pure Pursuit follower, safety monitor, and mission controller:
 
 ```bash
 source /opt/ros/jazzy/setup.bash
-source '/home/adarsh4our/CAMP/install/setup.bash'
+source /home/adarsh4our/CAMP\ A/install/setup.bash  # or: source '/home/adarsh4our/CAMP/install/setup.bash'
 export DISPLAY=:1
 ros2 launch campus_nav full_simulation.launch.py
 ```
 
 - **Spawn Location:** SAB C road node at Gazebo `(x=15.02, y=43.00, z=0.80, yaw=3.14159)` facing North along the road towards campus.
 - **Buggy Speed:** Max 8.0 km/h (2.22 m/s), automatically slows down at sharp curves with dynamic lookahead tracking.
-- **Color & Sensors:** High-visibility safety orange chassis with canopy, roof-mounted 3D LiDAR, front camera, RealSense depth camera, and IMU.
+- **Color & Sensors:** High-visibility safety orange chassis with canopy, roof-mounted Livox Mid-360 LiDAR, RealSense depth camera, and IMU.
 
-### RViz2 Window Layout:
-- **Main 3D Viewport:** Clean campus map view showing the road network, active 3.8m route carpet, campus stops (`SAB S`), path centerline, and the 3D `saye` buggy. *(3D LiDAR point cloud is disabled from the main map to prevent visual clutter).*
-- **Side Panel 1 — RealSense Camera Feed:** Live forward-facing camera stream on `/real_sense/image_raw`.
-- **Side Panel 2 — LiDAR 2D BEV Feed:** Live top-down tactical radar on `/campus/lidar_bev_image`:
-  - Concentric distance rings: $5\,\text{m}, 10\,\text{m}, 15\,\text{m}, 20\,\text{m}$.
-  - Color-coded returns: Flat road (cyan), speed bumps (bright yellow), obstacles/pedestrians (bright red).
-  - Dynamic safety corridor bounding box and vehicle footprint.
-  - HUD header with real-time speed, safety arbitration state, and obstacle proximity.
+### 🖥️ 3-Window Multi-Viewport Display Layout (1920x1080 Screen):
+When launched, 3 synchronized windows automatically open in a tiled layout:
 
-### Re-open / Standalone RViz (Standard Campus Nav):
+1. **Window 1: Gazebo Harmonic Sim (Bottom-Right, 960x520 at X=960, Y=520)**
+   - High-fidelity 3D simulation of the campus, physics engine, obstacle spawners, and vehicle dynamics.
+   - GPU-accelerated rendering with direct NVIDIA hardware offload.
+
+2. **Window 2: RViz Campus Map & RealSense Camera Feed (Left Half, 960x1040 at X=0, Y=0)**
+   - **Main 3D Viewport:** Third-person camera tracking (`base_link`) showing the clean vector road network, all 32 campus stops (`SAB S`, `LOC`, etc.), active 3.8m route ribbon carpet, path centerline, and live 3D `saye` buggy model. *(All LiDAR point feeds and 2D BEV panels are completely removed from Window 2 to keep the map pristine).*
+   - **Side Panel — RealSense Camera Feed:** Live RGB forward-facing stream on `/real_sense/image_raw`.
+
+3. **Window 3: RViz Livox Mid-360 LiDAR Inspection (Top-Right, 960x520 at X=960, Y=0)**
+   - **Live 3D Point Cloud (`/cloud`):** Dedicated high-speed inspection of the roof-mounted Livox Mid-360.
+   - **Instantaneous 10 Hz Sweeps:** Zero decay time (`Decay Time: 0.0`) for real-time sensor verification without ghosting artifacts.
+   - **Ultra-Dense Ray Density:** 2048 azimuth samples $\times$ 256 vertical rings (524k points per frame) rendered as 0.12m flat squares for dense, solid surface detection.
+   - **Tracking:** Automatically follows the vehicle's `base_link` frame.
+
+### 📡 Livox Mid-360 Sensor Specifications:
+- **Horizontal FOV:** 360° omnidirectional azimuth coverage (2048 samples).
+- **Vertical FOV:** 60° asymmetric aperture ($[-45^\circ, +15^\circ]$ or $[-0.785, 0.262]\,\text{rad}$) with 256 vertical rings.
+- **Blind-Spot Elimination:** Lower vertical angle of $-45^\circ$ sweeps the road starting just $1.6\,\text{m}$ from the vehicle center (immediately in front of the front bumper), completely eliminating forward ground blind spots for speed breakers and pedestrians.
+- **Effective Range:** $0.1\,\text{m}$ to $70.0\,\text{m}$.
+
+### Re-open / Standalone RViz Windows Individually:
 ```bash
+# Re-open Window 2 (Campus Nav Map & Camera):
 ros2 run rviz2 rviz2 -d "/home/adarsh4our/CAMP/src/campus_nav/rviz/campus_nav.rviz" --ros-args -p use_sim_time:=true
-```
 
-### Solo 3D LiDAR Point Cloud Map View (Raw 3D Points Only):
-To switch RViz to a dedicated dark view showing only the raw 3D LiDAR point cloud with rainbow elevation coloring:
-```bash
-ros2 run rviz2 rviz2 -d "/home/adarsh4our/CAMP/src/campus_nav/rviz/solo_lidar.rviz" --ros-args -p use_sim_time:=true
+# Re-open Window 3 (Livox Mid-360 LiDAR Cloud):
+ros2 run rviz2 rviz2 -d "/home/adarsh4our/CAMP/src/campus_nav/rviz/livox_mid360.rviz" --ros-args -p use_sim_time:=true
 ```
 
 ---
