@@ -41,9 +41,9 @@ class OdomBridgeNode(Node):
         self.model_name = self.get_parameter('model_name').get_parameter_value().string_value
 
         # Load map for void recovery road snapping
-        default_osm = next((p for p in ['/home/adarsh4our/CAMP/campus_with_junctions_and_stops.osm',
-                                        '/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm']
-                            if os.path.exists(p)), '/home/adarsh4our/CAMP/campus_with_junctions_and_stops.osm')
+        default_osm = next((p for p in ['/home/yash/CAMP/campus_with_junctions_and_stops.osm',
+                                        '/home/yash/CAMP A/campus_with_junctions_and_stops.osm']
+                            if os.path.exists(p)), '/home/yash/CAMP/campus_with_junctions_and_stops.osm')
         self.campus = CampusMap(default_osm)
 
         # Publishers
@@ -151,6 +151,19 @@ class OdomBridgeNode(Node):
         tb.transform.translation.z = gz_z
         tb.transform.rotation = orientation_q
         self.tf_broadcaster.sendTransform(tb)
+        
+        t_nav = TransformStamped()
+        t_nav.header.stamp = now
+        t_nav.header.frame_id = 'map'
+        t_nav.child_frame_id = 'nav_base_link'
+        t_nav.transform.translation.x = nav_x
+        t_nav.transform.translation.y = nav_y
+        t_nav.transform.translation.z = gz_z
+        t_nav.transform.rotation.x = qx
+        t_nav.transform.rotation.y = qy
+        t_nav.transform.rotation.z = qz
+        t_nav.transform.rotation.w = qw
+        self.tf_broadcaster.sendTransform(t_nav)
 
         # ── 5. Publish 3D High-Contrast Vehicle Marker for RViz ────────────────
         self._publish_vehicle_markers(now)

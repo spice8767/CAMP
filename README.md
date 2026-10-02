@@ -7,35 +7,52 @@
 
 **CAMP** is a complete, production-grade autonomous driving and simulation stack for an electric campus shuttle buggy (`saye`), developed on **ROS 2 Jazzy** and **Gazebo Harmonic**. 
 
-It features OpenStreetMap (OSM) vector graph ingestion, A* global route planning with dynamic 3.8m road ribbon generation, curvature-adaptive Pure Pursuit trajectory tracking, a proactive 3D LiDAR/RGB-D camera safety pipeline with real-time speed breaker detection, and a dual-feed RViz visualization dashboard.
+It features OpenStreetMap (OSM) vector graph ingestion, A* global route planning with dynamic 3.8m road ribbon generation, and a fully integrated **Nav2 (ROS 2 Navigation)** stack with `RegulatedPurePursuitController` for trajectory tracking and local costmap obstacle avoidance.
+
+---
+
+## 🆕 Latest Changes (Nav2 Integration)
+- **Nav2 Stack Integration:** Replaced the legacy manual `path_follower_node.py` and `safety_monitor_node.py` with the industry-standard **ROS 2 Navigation (Nav2)** stack.
+- **Regulated Pure Pursuit:** Configured Nav2's `RegulatedPurePursuitController` to handle aggressive Ackermann steering and dynamic local obstacle avoidance via the Local Costmap (powered by the 3D LiDAR).
+- **Virtual Frame Translation:** Solved a legacy CAD issue (buggy drives along `-Y` instead of ROS-standard `+X`) by broadcasting a virtual `nav_base_link` TF frame (-90° rotation) from `odom_bridge_node.py`, allowing Nav2 to operate flawlessly without breaking the original URDF geometry.
+- **Nav2 Adapter Bridge:** Created `nav2_adapter_node.py` to seamlessly bridge the original custom `/campus/target_path` topic into Nav2's `/follow_path` Action Server.
 
 ---
 
 ## 📸 System Architecture
 
-```
-                       +---------------------------------------+
-                       |    OpenStreetMap Vector Campus Map    |
-                       |   (campus_with_junctions_and_stops)   |
-                       +-------------------+-------------------+
-                                           |
-+----------------------+                   v
-| /campus/mission      |----------> [ campus_planner_node ] --------> /campus/global_path
-| /campus/goal_stop    |                   |                 -------> /campus/route_ribbon
-+----------------------+                   |                 -------> /campus/road_graph
-                                           v
-+----------------------+         [ path_follower_node ] ------------> /cmd_vel
-| /campus/safety_status|-------> (Pure Pursuit Control)
-+----------------------+                   ^
-           ^                               |
-           |                               |
-[ safety_monitor_node ]          [ odom_bridge_node ] <-------------- /model/saye/odometry_world
-   |-- 3D LiDAR (/cloud)            (TF & World Bridge)
-   |-- Depth Camera
+```text
+[ mission_controller_node ] 
+   |-- Receives 'Start|Goal'
+   |-- Queues multi-leg trips
    v
-/campus/lidar_bev_image (2D Radar Feed)
-/campus/safety_corridor (Visual Bounds)
-/campus/safety_threats  (Threat Clusters)
+/campus/plan_route (String)
+   |
+   v
+[ campus_planner_node ] 
+   |-- OSM Graph A* Search
+   |-- Generates visual ribbon
+   |                 -------> /campus/global_path (Path)
+   |                 -------> /campus/route_ribbon (Marker)
+   v
+/campus/target_path
+   |
+   v
+[ nav2_adapter_node ]
+   |-- Translates topic to action
+   v
+Nav2 /follow_path (Action)
+   |
+   v
+[ nav2_controller_server ] <----- [ Nav2 Local Costmap ] <--- 3D LiDAR (/cloud)
+   |-- (Regulated Pure Pursuit)       (Obstacle Avoidance)
+   v
+/cmd_vel (Twist)
+   |
+   v
+[ gz-sim-ackermann-plugin ]
+
+(TF Tree: map -> base_link -> nav_base_link provided by odom_bridge_node)
 ```
 
 ---
@@ -51,7 +68,7 @@ colcon build --symlink-install
 ```
 
 ### 2. Launch Complete Simulation (One Command — 3 Windows)
-Launches Gazebo Harmonic (with NVIDIA GPU offload), spawns the `saye` electric buggy on the road at **SAB C**, starts all sensor bridges, odometry transforms, A* planner, Pure Pursuit follower, safety monitor, and automatically arranges 3 synchronized operator windows:
+Launches Gazebo Harmonic (with NVIDIA GPU offload), spawns the `saye` electric buggy on the road at **SAB C**, starts all sensor bridges, odometry transforms, A* planner, mission controller, Nav2 obstacle avoidance stack, and automatically arranges 3 synchronized operator windows:
 
 ```bash
 source /opt/ros/jazzy/setup.bash
@@ -161,7 +178,7 @@ ros2 run campus_nav wasd_teleop
 
 | Package | Description |
 |---|---|
-| [`campus_nav`](src/campus_nav/) | Core autonomy stack: OSM graph loader, A* planner, road ribbon generator, Pure Pursuit follower, 3D LiDAR/camera safety monitor, mission controller, and teleport/orient CLI tools. |
+| [`campus_nav`](src/campus_nav/) | Core autonomy stack: OSM graph loader, A* planner, dynamic road ribbon generator, mission controller, Nav2 adapter bridge, and teleport/orient CLI tools. |
 | [`saye_description`](src/saye_description/) | Robot description: Physics-accurate URDF/Xacro, 3D meshes, 3D LiDAR (1024x128), RealSense RGB-D camera, IMU, and Gazebo world files. |
 | [`saye_bringup`](src/saye_bringup/) | System bringup: `ros_gz_bridge` parameter mapping, Nav2 stack configurations, SLAM Toolbox, and AMCL configs. |
 | [`saye_msgs`](src/saye_msgs/) | Custom ROS 2 message and service interfaces (`Map.msg`, `ShareMap.srv`). |

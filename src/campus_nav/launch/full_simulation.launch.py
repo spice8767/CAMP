@@ -77,8 +77,8 @@ def generate_launch_description():
     campus_sdf = tmp_sdf.name
 
     # Updated OSM — prefer workspace root copy if present
-    default_osm = next((p for p in ['/home/adarsh4our/CAMP/campus_with_junctions_and_stops.osm',
-                                    '/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm']
+    default_osm = next((p for p in ['/home/yash/CAMP/campus_with_junctions_and_stops.osm',
+                                    '/home/yash/CAMP A/campus_with_junctions_and_stops.osm']
                         if os.path.exists(p)), os.path.join(pkg_campus_nav, 'data', 'campus.osm'))
 
     stops_yaml = os.path.join(pkg_campus_nav, 'config', 'campus_junctions_and_stops.yaml')
@@ -218,36 +218,50 @@ def generate_launch_description():
         parameters=[{'model_name': 'saye', 'use_sim_time': True}]
     )
 
-    # ── Pure Pursuit Path Follower ─────────────────────────────────────────────
-    path_follower_node = Node(
+    # ── [COMMENTED OUT] Pure Pursuit Path Follower ─────────────────────────────
+    # path_follower_node = Node(
+    #     package='campus_nav',
+    #     executable='path_follower_node',
+    #     ...
+    # )
+
+    # ── [COMMENTED OUT] Safety Monitor Node ────────────────────────────────────
+    # safety_monitor_node = Node(
+    #     package='campus_nav',
+    #     executable='safety_monitor_node',
+    #     ...
+    # )
+
+    # ── Nav2 Local Controller & Costmap (Replaces Follower & Safety) ───────────
+    nav2_params_file = join(pkg_campus_nav, 'config', 'nav2_params.yaml')
+
+    nav2_adapter_node = Node(
         package='campus_nav',
-        executable='path_follower_node',
-        name='path_follower_node',
+        executable='nav2_adapter_node',
+        name='nav2_adapter_node',
         output='screen',
-        parameters=[{
-            'lookahead_distance': 4.0,
-            'cruise_speed': LaunchConfiguration('nominal_speed'),
-            'max_speed': 2.22,
-            'min_speed': 0.8,
-            'goal_tolerance': 2.2,
-            'control_rate_hz': 20.0,
-            'use_sim_time': True
-        }]
+        parameters=[{'use_sim_time': True}]
     )
 
-    # ── Safety Monitor Node (3D LiDAR + Depth Corridor & Void Guard) ──────────
-    safety_monitor_node = Node(
-        package='campus_nav',
-        executable='safety_monitor_node',
-        name='safety_monitor_node',
+    nav2_controller_node = Node(
+        package='nav2_controller',
+        executable='controller_server',
+        name='controller_server',
         output='screen',
-        parameters=[{
-            'corridor_width': 1.6,
-            'stop_distance': 3.2,
-            'max_lookahead': 8.5,
-            'bump_speed_limit': 0.8,
-            'use_sim_time': True
-        }]
+        parameters=[nav2_params_file],
+        remappings=[('/cmd_vel', '/cmd_vel')] # Ensure we output to Gazebo's /cmd_vel
+    )
+
+    nav2_lifecycle_manager = Node(
+        package='nav2_lifecycle_manager',
+        executable='lifecycle_manager',
+        name='lifecycle_manager_navigation',
+        output='screen',
+        parameters=[
+            {'use_sim_time': True},
+            {'autostart': True},
+            {'node_names': ['controller_server']}
+        ]
     )
 
     # ── Mission Controller ─────────────────────────────────────────────────────
@@ -287,8 +301,14 @@ def generate_launch_description():
         # Navigation stack (slight delay to ensure Gazebo is up)
         TimerAction(period=2.0, actions=[planner_node]),
         TimerAction(period=2.0, actions=[odom_bridge_node]),
-        TimerAction(period=2.0, actions=[safety_monitor_node]),
-        TimerAction(period=2.0, actions=[path_follower_node]),
+        # TimerAction(period=2.0, actions=[safety_monitor_node]),
+        # TimerAction(period=2.0, actions=[path_follower_node]),
+        
+        # Launch Nav2 Controller and Lifecycle Manager
+        TimerAction(period=2.0, actions=[nav2_adapter_node]),
+        TimerAction(period=2.0, actions=[nav2_controller_node]),
+        TimerAction(period=2.5, actions=[nav2_lifecycle_manager]),
+
         TimerAction(period=2.0, actions=[mission_controller_node]),
         TimerAction(period=2.0, actions=[audit_logger_node]),
         TimerAction(period=3.0, actions=[rviz_map_node]),

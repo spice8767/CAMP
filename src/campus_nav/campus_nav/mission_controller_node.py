@@ -42,8 +42,8 @@ class MissionControllerNode(Node):
         self.cb_group = ReentrantCallbackGroup()
 
         # Load map to look up stop road node coordinates
-        default_osm = next((p for p in ['/home/adarsh4our/CAMP/campus_with_junctions_and_stops.osm',
-                                        '/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm']
+        default_osm = next((p for p in ['/home/yash/CAMP/campus_with_junctions_and_stops.osm',
+                                        '/home/yash/CAMP A/campus_with_junctions_and_stops.osm']
                             if os.path.exists(p)), None)
         if not default_osm:
             from ament_index_python.packages import get_package_share_directory

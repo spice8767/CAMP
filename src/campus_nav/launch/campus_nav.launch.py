@@ -10,7 +10,7 @@ def generate_launch_description():
     pkg_share = get_package_share_directory('campus_nav')
 
     default_rviz = os.path.join(pkg_share, 'rviz', 'campus_nav.rviz')
-    default_osm = '/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm' if os.path.exists('/home/adarsh4our/CAMP A/campus_with_junctions_and_stops.osm') else os.path.join(pkg_share, 'data', 'campus.osm')
+    default_osm = '/home/yash/CAMP A/campus_with_junctions_and_stops.osm' if os.path.exists('/home/yash/CAMP A/campus_with_junctions_and_stops.osm') else os.path.join(pkg_share, 'data', 'campus.osm')
     default_yaml = os.path.join(pkg_share, 'config', 'campus_junctions_and_stops.yaml')
 
     declare_start = DeclareLaunchArgument(

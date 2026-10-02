@@ -150,7 +150,7 @@ class SafetyMonitorNode(Node):
         half_w = self.corridor_w / 2.0
 
         # Points inside forward corridor
-        in_corridor = (x >= 0.5) & (x <= active_lookahead) & (np.abs(y) <= half_w)
+        in_corridor = (x >= 2.0) & (x <= active_lookahead) & (np.abs(y) <= half_w)
         c_x = x[in_corridor]
         c_y = y[in_corridor]
         c_z = z[in_corridor]
@@ -169,8 +169,8 @@ class SafetyMonitorNode(Node):
 
         # ── 4. Flank Void & Cliff Guard ─────────────────────────────────────────
         # Check left and right wheel flanks (0.8m to 2.2m lateral, 0.5m to 4.5m forward)
-        left_flank = (x >= 0.5) & (x <= self.edge_dist) & (y >= 0.8) & (y <= 2.2)
-        right_flank = (x >= 0.5) & (x <= self.edge_dist) & (y <= -0.8) & (y >= -2.2)
+        left_flank = (x >= 2.0) & (x <= self.edge_dist) & (y >= 0.8) & (y <= 2.2)
+        right_flank = (x >= 2.0) & (x <= self.edge_dist) & (y <= -0.8) & (y >= -2.2)
 
         left_pts = np.count_nonzero(left_flank)
         right_pts = np.count_nonzero(right_flank)
