@@ -200,6 +200,7 @@ ros2 run campus_nav wasd_teleop
 
 ## 📖 Additional Documentation
 
+* **[NAV2_INTEGRATION.md](NAV2_INTEGRATION.md):** Detailed "Before & After" change catalogue documenting the shift from legacy manual scripts to the Nav2 navigation stack.
 * **[COMMANDS.md](COMMANDS.md):** Complete cheat sheet with all build, launch, teleport, telemetry, and debugging commands.
 * **[BUG_AUDIT.md](BUG_AUDIT.md):** Full technical audit log of resolved physics, TF, and parameter bridge bugs.
 * **[campus_nav Documentation](src/campus_nav/README.md):** Detailed guide to navigation algorithms and topics.
