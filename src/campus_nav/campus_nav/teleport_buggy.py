@@ -29,9 +29,29 @@ from campus_nav.coord_bridge import nav_to_gz, gz_to_nav
 
 
 ROAD_SURFACE_Z = 0.60  # Road surface is at Z=0.30m + wheel radius 0.28m
-DEFAULT_OSM = next((p for p in ['/home/yash/CAMP/campus_with_junctions_and_stops.osm',
-                                '/home/yash/CAMP A/campus_with_junctions_and_stops.osm']
-                    if os.path.exists(p)), '/home/yash/CAMP/campus_with_junctions_and_stops.osm')
+
+def _find_default_osm():
+    candidates = []
+    try:
+        from ament_index_python.packages import get_package_share_directory
+        pkg_share = get_package_share_directory('campus_nav')
+        candidates.extend([
+            os.path.join(pkg_share, 'data', 'campus_with_junctions_and_stops.osm'),
+            os.path.join(pkg_share, 'data', 'campus.osm')
+        ])
+    except Exception:
+        pass
+    curr_dir = os.path.dirname(os.path.abspath(__file__))
+    repo_root = os.path.abspath(os.path.join(curr_dir, '..', '..', '..'))
+    candidates.extend([
+        os.path.join(curr_dir, '..', 'data', 'campus_with_junctions_and_stops.osm'),
+        os.path.join(curr_dir, '..', 'data', 'campus.osm'),
+        os.path.join(repo_root, 'campus_with_junctions_and_stops.osm'),
+        os.path.join(repo_root, 'campus.osm')
+    ])
+    return next((p for p in candidates if os.path.exists(p)), '')
+
+DEFAULT_OSM = _find_default_osm()
 
 
 def get_current_gz_pose(model='saye'):

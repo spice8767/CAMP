@@ -42,13 +42,25 @@ class MissionControllerNode(Node):
         self.cb_group = ReentrantCallbackGroup()
 
         # Load map to look up stop road node coordinates
-        default_osm = next((p for p in ['/home/yash/CAMP/campus_with_junctions_and_stops.osm',
-                                        '/home/yash/CAMP A/campus_with_junctions_and_stops.osm']
-                            if os.path.exists(p)), None)
-        if not default_osm:
+        candidates_osm = []
+        try:
             from ament_index_python.packages import get_package_share_directory
             pkg = get_package_share_directory('campus_nav')
-            default_osm = os.path.join(pkg, 'data', 'campus.osm')
+            candidates_osm.extend([
+                os.path.join(pkg, 'data', 'campus_with_junctions_and_stops.osm'),
+                os.path.join(pkg, 'data', 'campus.osm')
+            ])
+        except Exception:
+            pass
+        curr_dir = os.path.dirname(os.path.abspath(__file__))
+        repo_root = os.path.abspath(os.path.join(curr_dir, '..', '..', '..'))
+        candidates_osm.extend([
+            os.path.join(curr_dir, '..', 'data', 'campus_with_junctions_and_stops.osm'),
+            os.path.join(curr_dir, '..', 'data', 'campus.osm'),
+            os.path.join(repo_root, 'campus_with_junctions_and_stops.osm'),
+            os.path.join(repo_root, 'campus.osm')
+        ])
+        default_osm = next((p for p in candidates_osm if os.path.exists(p)), '')
         self.declare_parameter('osm_file', default_osm)
         osm_file = self.get_parameter('osm_file').get_parameter_value().string_value
 

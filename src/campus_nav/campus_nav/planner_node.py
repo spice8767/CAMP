@@ -25,13 +25,36 @@ class CampusPlannerNode(Node):
         super().__init__('campus_planner_node')
 
         # Declare parameters
-        pkg_share = get_package_share_directory('campus_nav') if 'campus_nav' in os.environ.get('AMENT_PREFIX_PATH', '') else ''
-        default_osm = next((p for p in ['/home/yash/CAMP/campus_with_junctions_and_stops.osm',
-                                        '/home/yash/CAMP A/campus_with_junctions_and_stops.osm']
-                            if os.path.exists(p)), (os.path.join(pkg_share, 'data', 'campus.osm') if pkg_share else ''))
-        default_yaml = next((p for p in ['/home/yash/CAMP/src/campus_nav/config/campus_junctions_and_stops.yaml',
-                                         '/home/yash/CAMP A/src/campus_nav/config/campus_junctions_and_stops.yaml']
-                             if os.path.exists(p)), (os.path.join(pkg_share, 'config', 'campus_junctions_and_stops.yaml') if pkg_share else ''))
+        # Declare parameters dynamically without hardcoded user home paths
+        candidates_osm = []
+        candidates_yaml = []
+        try:
+            from ament_index_python.packages import get_package_share_directory
+            pkg_share = get_package_share_directory('campus_nav')
+            candidates_osm.extend([
+                os.path.join(pkg_share, 'data', 'campus_with_junctions_and_stops.osm'),
+                os.path.join(pkg_share, 'data', 'campus.osm')
+            ])
+            candidates_yaml.append(os.path.join(pkg_share, 'config', 'campus_junctions_and_stops.yaml'))
+        except Exception:
+            pass
+
+        # Workspace relative fallbacks
+        curr_dir = os.path.dirname(os.path.abspath(__file__))
+        repo_root = os.path.abspath(os.path.join(curr_dir, '..', '..', '..'))
+        candidates_osm.extend([
+            os.path.join(curr_dir, '..', 'data', 'campus_with_junctions_and_stops.osm'),
+            os.path.join(curr_dir, '..', 'data', 'campus.osm'),
+            os.path.join(repo_root, 'campus_with_junctions_and_stops.osm'),
+            os.path.join(repo_root, 'campus.osm')
+        ])
+        candidates_yaml.extend([
+            os.path.join(curr_dir, '..', 'config', 'campus_junctions_and_stops.yaml'),
+            os.path.join(repo_root, 'src', 'campus_nav', 'config', 'campus_junctions_and_stops.yaml')
+        ])
+
+        default_osm = next((p for p in candidates_osm if os.path.exists(p)), '')
+        default_yaml = next((p for p in candidates_yaml if os.path.exists(p)), '')
 
         from rcl_interfaces.msg import ParameterDescriptor
         dyn_desc = ParameterDescriptor(dynamic_typing=True)

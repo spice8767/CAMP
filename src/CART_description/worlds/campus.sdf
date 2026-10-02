@@ -45,7 +45,7 @@
           <geometry>
             <mesh>
               <scale>1 1 1</scale>
-              <uri>file:///home/adarsh4our/CAMP/install/CART_description/share/CART_description/meshes/map1.obj</uri>
+              <uri>model://CART_description/meshes/map1.obj</uri>
             </mesh>
           </geometry>
         </visual>
@@ -53,7 +53,7 @@
           <geometry>
             <mesh>
               <scale>1 1 1</scale>
-              <uri>file:///home/adarsh4our/CAMP/install/CART_description/share/CART_description/meshes/map1.obj</uri>
+              <uri>model://CART_description/meshes/map1.obj</uri>
             </mesh>
           </geometry>
         </collision>

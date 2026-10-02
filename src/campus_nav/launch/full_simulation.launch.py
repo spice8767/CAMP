@@ -76,10 +76,15 @@ def generate_launch_description():
     tmp_sdf.close()
     campus_sdf = tmp_sdf.name
 
-    # Updated OSM — prefer workspace root copy if present
-    default_osm = next((p for p in ['/home/yash/CAMP/campus_with_junctions_and_stops.osm',
-                                    '/home/yash/CAMP A/campus_with_junctions_and_stops.osm']
-                        if os.path.exists(p)), os.path.join(pkg_campus_nav, 'data', 'campus.osm'))
+    # Updated OSM — dynamically resolve without hardcoded paths
+    candidates_osm = [
+        os.path.join(pkg_campus_nav, 'data', 'campus_with_junctions_and_stops.osm'),
+        os.path.join(pkg_campus_nav, 'data', 'campus.osm'),
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'campus_with_junctions_and_stops.osm'),
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'campus_with_junctions_and_stops.osm'),
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'campus.osm')
+    ]
+    default_osm = next((p for p in candidates_osm if os.path.exists(p)), os.path.join(pkg_campus_nav, 'data', 'campus.osm'))
 
     stops_yaml = os.path.join(pkg_campus_nav, 'config', 'campus_junctions_and_stops.yaml')
 

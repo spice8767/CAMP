@@ -1,6 +1,7 @@
+import os
 import re
 
-file_path = '/home/adarsh4our/CAMP A/src/saye_description/models/saye/model.xacro'
+file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model.xacro')
 
 with open(file_path, 'r') as f:
     content = f.read()
