@@ -109,8 +109,9 @@ class CampusPlannerNode(Node):
         from nav_msgs.msg import Odometry
         self.vehicle_pose_sub = self.create_subscription(
             PoseStamped, '/campus/vehicle_pose', self.vehicle_pose_callback, 10)
-        self.odom_sub = self.create_subscription(
-            Odometry, '/odom', self.odom_callback, 10)
+        # NOTE: no /odom subscription any more. /odom is now SLAM odometry in the 'odom'
+        # frame (starts near 0,0), not planner coordinates, so it must not feed the
+        # checkpoint tracker. /campus/vehicle_pose (map frame) already drives it.
 
         # Build static road graph marker once (roads never change — only timestamp updates each tick)
         self.cached_road_marker = self._build_road_graph_marker()
@@ -172,7 +173,7 @@ class CampusPlannerNode(Node):
         from campus_nav.coord_bridge import nav_to_gz
         gz_x, gz_y = nav_to_gz(nav_x, nav_y)
         new_driving_yaw = current_yaw + math.pi
-        new_gz_yaw = new_driving_yaw + (math.pi / 2.0)
+        new_gz_yaw = new_driving_yaw  # base_link is x-forward: gz yaw == driving yaw
         qz = math.sin(new_gz_yaw / 2.0)
         qw = math.cos(new_gz_yaw / 2.0)
         req = (

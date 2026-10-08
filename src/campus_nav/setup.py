@@ -38,6 +38,7 @@ setup(
             'wasd_teleop              = campus_nav.wasd_teleop:main',
             'test_obstacle_spawner    = campus_nav.test_obstacle_spawner:main',
             'arrange_windows          = campus_nav.arrange_windows:arrange',
+            'add_time = campus_nav.add_time:main',
         ],
     },
 )

@@ -6,16 +6,16 @@
     <tag k="description" v="Campus Stop - Nearest Junction: 14103649902" />
     <tag k="name" v="LHC" />
   </node>
-  <node id="-25356" visible="true" version="1" lat="30.9673992" lon="76.474445">
+  <!--<node id="-25356" visible="true" version="1" lat="30.9673992" lon="76.474445">
     <tag k="amenity" v="bus_station" />
     <tag k="description" v="Campus Stop - Nearest Junction: 11752291184" />
     <tag k="name" v="Super Academic Building" />
-  </node>
-  <node id="-25357" action="modify" visible="true" version="1" lat="30.96722857015" lon="76.47322901946">
+  </node>-->
+  <!--<node id="-25357" action="modify" visible="true" version="1" lat="30.96722857015" lon="76.47322901946">
     <tag k="amenity" v="bus_station" />
     <tag k="description" v="Campus Stop - Nearest Junction: 11752291184" />
     <tag k="name" v="Nalanda library" />
-  </node>
+  </node>-->
   <node id="-25358" action="modify" visible="true" version="1" lat="30.96875560686" lon="76.47421317321">
     <tag k="amenity" v="bus_station" />
     <tag k="description" v="Campus Stop - Nearest Junction: 9514233028" />
@@ -26,20 +26,20 @@
     <tag k="description" v="Campus Stop - Nearest Junction: 14212446381" />
     <tag k="name" v="S Ramanujan building" />
   </node>
-  <node id="-25361" visible="true" version="1" lat="30.9686835" lon="76.4705967">
+  <!--<node id="-25361" visible="true" version="1" lat="30.9686835" lon="76.4705967">
     <tag k="amenity" v="bus_station" />
     <tag k="description" v="Campus Stop - Nearest Junction: 9513402251" />
     <tag k="name" v="soc lab" />
-  </node>
+  </node>-->
   <node id="-25362" action="modify" visible="true" version="1" lat="30.96773794705" lon="76.46964893291">
     <tag k="amenity" v="bus_station" />
     <tag k="description" v="Campus Stop - Nearest Junction: 9513069046" />
     <tag k="name" v="Utility block" />
   </node>
-  <node id="-25364" visible="true" version="1" lat="30.9661766" lon="76.4712977">
+  <node id="-25364" visible="true" version="1" lat="30.966476" lon="76.471308">
     <tag k="amenity" v="bus_station" />
     <tag k="description" v="Campus Stop - Nearest Junction: 9513402276" />
-    <tag k="name" v="Mess &amp; Cafeteria" />
+    <tag k="name" v="Veg Mess &amp; Cafeteria" />
   </node>
   <node id="-25365" action="modify" visible="true" version="1" lat="30.96647925608" lon="76.47174513147">
     <tag k="amenity" v="bus_station" />
@@ -86,7 +86,7 @@
     <tag k="highway" v="bus_stop" />
     <tag k="name" v="Chenab Front" />
   </node>
-  <node id="-25610" visible="true" version="1" lat="30.96618" lon="76.4713">
+  <node id="-25610" visible="true" version="1" lat="30.967347" lon="76.467345">
     <tag k="amenity" v="bus_station" />
     <tag k="description" v="Campus Stop (Road Node: 9513402276)" />
     <tag k="highway" v="bus_stop" />
@@ -110,13 +110,13 @@
     <tag k="highway" v="bus_stop" />
     <tag k="name" v="Chemistry Block" />
   </node>
-  <node id="-25614" visible="true" version="1" lat="30.9675" lon="76.47111">
+  <node id="-25614" visible="true" version="1" lat="30.968831" lon="76.471683">
     <tag k="amenity" v="bus_station" />
     <tag k="description" v="Campus Stop (Road Node: 12480400217)" />
     <tag k="highway" v="bus_stop" />
     <tag k="name" v="Mechanical Block Front" />
   </node>
-  <node id="-25615" visible="true" version="1" lat="30.9665" lon="76.47111">
+  <node id="-25615" visible="true" version="1" lat="30.968231" lon="76.471670">
     <tag k="amenity" v="bus_station" />
     <tag k="description" v="Campus Stop (Road Node: 9513402276)" />
     <tag k="highway" v="bus_stop" />
@@ -3319,7 +3319,7 @@
     <tag k="building" v="yes" />
     <tag k="building:material" v="concrete" />
     <tag k="height" v="18" />
-    <tag k="name" v="Mess &amp; Cafeteria" />
+    <tag k="name" v="Veg Mess &amp; Cafeteria" />
   </way>
   <way id="1349204072" timestamp="2025-01-09T06:01:14Z" uid="22355679" user="Nikita2445" visible="true" version="3" changeset="161156715">
     <nd ref="12480399892" />

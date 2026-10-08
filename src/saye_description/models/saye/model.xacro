@@ -11,7 +11,27 @@
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
 
-  <link name="base_link">
+  <!-- ===================================================================
+       Frame convention (REP-103): base_link has x = forward, y = left, z = up.
+       The CAD/mesh body (chassis_link) was modelled driving toward -y, so it
+       hangs under base_link rotated by +90 deg about z.
+       TF tree:  base_footprint -> base_link -> chassis_link -> everything else
+       =================================================================== -->
+
+  <!-- Where the chassis mesh origin sits in base_link (metres, along x/forward).
+       0.0 = base_link at the chassis origin (current behaviour).
+       1.7234 = base_link at the centre of the rear axle (typical for Ackermann). -->
+  <xacro:property name="chassis_x_in_base" value="0.0"/>
+
+  <link name="base_link"/>
+
+  <joint name="base_link_to_chassis_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="chassis_link"/>
+    <origin xyz="${chassis_x_in_base} 0 0" rpy="0 0 ${pi/2}"/>
+  </joint>
+
+  <link name="chassis_link">
     <inertial>
       <origin xyz="-0.0038250693917988316 0.2294986787564171 0.4822630810508102" rpy="0 0 0" />
       <mass value="400.0" />
@@ -228,27 +248,27 @@
 
   <joint name="Rigid_15" type="fixed">
     <origin xyz="0.0037 -0.0723 0.3302" rpy="0 0 0" />
-    <parent link="base_link" />
+    <parent link="chassis_link" />
     <child link="top_1" />
   </joint>
 
   <joint name="Revolute_20" type="continuous">
     <origin xyz="0.3884 1.7234 0.292" rpy="0 0 0" />
-    <parent link="base_link" />
+    <parent link="chassis_link" />
     <child link="wheel_back_left_1" />
     <axis xyz="1.0 0.0 0.0" />
   </joint>
 
   <joint name="Revolute_21" type="continuous">
     <origin xyz="-0.3894 1.7224 0.2942" rpy="0 0 0" />
-    <parent link="base_link" />
+    <parent link="chassis_link" />
     <child link="wheel_back_right_1" />
     <axis xyz="1.0 0.0 0.0" />
   </joint>
 
   <joint name="Revolute_22" type="revolute">
     <origin xyz="0.37 -0.4011 0.2943" rpy="0 0 0" />
-    <parent link="base_link" />
+    <parent link="chassis_link" />
     <child link="Knuckle_left_1" />
     <axis xyz="0.0 0.0 1.0" />
     <limit lower="-0.523599" upper="0.523599" effort="100.0" velocity="100.0" />
@@ -256,28 +276,101 @@
 
   <joint name="Revolute_23" type="revolute">
     <origin xyz="-0.362 -0.4007 0.2946" rpy="0 0 0" />
-    <parent link="base_link" />
+    <parent link="chassis_link" />
     <child link="knuckle_right_1" />
     <axis xyz="0.0 0.0 1.0" />
     <limit lower="-0.523599" upper="0.523599" effort="100.0" velocity="100.0" />
   </joint>
 
   <joint name="lidar_joint" type="fixed">
-    <origin xyz="0 -0.42 1.75" rpy="0 0 -1.5707963" />
+    <origin xyz="0 0 1.75" rpy="0 0 -1.5707963" />
     <parent link="top_1" />
     <child link="lidar_link" />
   </joint>
 
   <joint name="depth_camera_joint" type="fixed">
     <origin xyz="0 -0.55 1.0" rpy="0 0 -1.5707963" />
-    <parent link="base_link" />
+    <parent link="chassis_link" />
     <child link="depth_camera_link" />
   </joint>
 
+  <xacro:property name="lidar2d_fov" value="${pi}"/>        <!-- 180 deg per sensor -->
+  <xacro:property name="lidar2d_samples" value="360"/>       <!-- 0.5 deg resolution -->
+  <xacro:property name="lidar2d_rate" value="5.5"/>           <!-- Hz -->
+  <xacro:property name="lidar2d_min_range" value="0.15"/>    <!-- m -->
+  <xacro:property name="lidar2d_max_range" value="12"/>    <!-- m -->
+  <xacro:property name="lidar2d_visualize" value="false"/>   <!-- true = draw rays in Gazebo GUI -->
+
+  <xacro:macro name="lidar_2d" params="name topic xyz rpy">
+    <link name="${name}_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="0.05" />
+        <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <cylinder radius="0.035" length="0.04" />
+        </geometry>
+        <material name="${name}_mat">
+          <color rgba="0.1 0.1 0.1 1.0"/>
+        </material>
+      </visual>
+    </link>
+
+    <joint name="${name}_joint" type="fixed">
+      <origin xyz="${xyz}" rpy="${rpy}" />
+      <parent link="chassis_link" />
+      <child link="${name}_link" />
+    </joint>
+
+    <gazebo reference="${name}_link">
+      <sensor name="${name}" type="gpu_lidar">
+        <gz_frame_id>${name}_link</gz_frame_id>
+        <pose>0 0 0 0 0 0</pose>
+        <always_on>1</always_on>
+        <update_rate>${lidar2d_rate}</update_rate>
+        <topic>${topic}</topic>
+        <visualize>${lidar2d_visualize}</visualize>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>${lidar2d_samples}</samples>
+              <resolution>1</resolution>
+              <min_angle>${-lidar2d_fov/2}</min_angle>
+              <max_angle>${lidar2d_fov/2}</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>1</samples>
+              <resolution>1</resolution>
+              <min_angle>0</min_angle>
+              <max_angle>0</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>${lidar2d_min_range}</min>
+            <max>${lidar2d_max_range}</max>
+            <resolution>0.01</resolution>
+          </range>
+        </lidar>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- Topics published: /scan_front  /scan_rear  /scan_left  /scan_right (gz.msgs.LaserScan) -->
+  <xacro:lidar_2d name="lidar_front" topic="scan_front" xyz="0.0 -1.00 0.30"  rpy="0 0 ${-pi/2}"/>
+  <xacro:lidar_2d name="lidar_rear"  topic="scan_rear"  xyz="0.0  2.1 0.30"  rpy="0 0 ${pi/2}"/>
+  <xacro:lidar_2d name="lidar_left"  topic="scan_left"  xyz="0.56 0.66 0.30"  rpy="0 0 0"/>
+  <xacro:lidar_2d name="lidar_right" topic="scan_right" xyz="-0.56 0.66 0.30" rpy="0 0 ${pi}"/>
+
+
   <!-- Gazebo specific extensions for sensors -->
-  <gazebo reference="base_link">
+  <gazebo reference="chassis_link">
     <sensor name="imu_sensor" type="imu">
-      <pose>0 0 0 0 0 0</pose>
+      <gz_frame_id>base_link</gz_frame_id>
+      <!-- yaw -90 deg in chassis frame = base_link axes (x forward) -->
+      <pose>0 0 0 0 0 -1.5707963</pose>
       <always_on>1</always_on>
       <update_rate>250</update_rate>
       <topic>imu</topic>
@@ -313,12 +406,12 @@
           <vertical>
             <samples>64</samples>
             <resolution>1</resolution>
-            <min_angle>-1.047198</min_angle>
-            <max_angle>0.261799</max_angle>
+            <min_angle>-0.907571</min_angle>
+            <max_angle>0.122173</max_angle>
           </vertical>
         </scan>
         <range>
-          <min>0.1</min>
+          <min>0.2</min>
           <max>70.0</max>
           <resolution>0.01</resolution>
         </range>

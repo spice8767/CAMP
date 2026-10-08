@@ -3,16 +3,19 @@ local_costmap:
     ros__parameters:
       update_frequency: 10.0
       publish_frequency: 10.0
-      global_frame: map
-      robot_base_frame: nav_base_link
+      # Rolling window lives in the SLAM odom frame (smooth, no jumps).
+      # Paths published in frame 'world' are transformed in via world <- map -> odom.
+      global_frame: odom
+      robot_base_frame: base_footprint
       use_sim_time: True
       rolling_window: True
       width: 15
       height: 15
       resolution: 0.1
-      # Buggy geometric footprint (Length ~3.2m, Width ~1.6m)
-      # Coordinates are [x, y] relative to base_link
-      footprint: "[ [1.6, 0.8], [1.6, -0.8], [-1.6, -0.8], [-1.6, 0.8] ]"
+      # Buggy footprint, [x, y] relative to base_footprint (x forward).
+      # The origin is the chassis origin: front bumper ~+1.0 m, rear ~-2.15 m, width ~1.3 m.
+      # If you later set chassis_x_in_base=1.7234 in the xacro, add 1.7234 to every x.
+      footprint: "[ [1.0, 0.65], [1.0, -0.65], [-2.15, -0.65], [-2.15, 0.65] ]"
       
       plugins: ["obstacle_layer", "inflation_layer"]
       
@@ -27,6 +30,9 @@ local_costmap:
           # We expect standard PointCloud2
           data_type: PointCloud2
           # Only trust points within 15 meters for local dodging
+          # NOTE: heights are measured in the costmap frame (odom, z=0 at base_footprint).
+          # The road is ~0.3 m BELOW base_footprint, so min_obstacle_height 0.1 only marks
+          # things taller than ~0.4 m above the road. Lower it to tune sensitivity.
           max_obstacle_height: 2.2
           min_obstacle_height: 0.1
           obstacle_max_range: 15.0
@@ -43,6 +49,9 @@ local_costmap:
 controller_server:
   ros__parameters:
     use_sim_time: True
+    # Velocity source for the controller. Ground truth for now; switch to the SLAM
+    # odometry topic (e.g. /kiss/odometry or /odom) once SLAM is running.
+    odom_topic: /gt/odom
     controller_frequency: 20.0
     progress_checker_plugin: "progress_checker"
     goal_checker_plugins: ["goal_checker"]
@@ -77,3 +86,4 @@ controller_server:
       inflation_cost_scaling_factor: 3.0
       regulated_linear_scaling_min_radius: 3.5
       regulated_linear_scaling_min_speed: 0.5
+      use_rotate_to_heading: false

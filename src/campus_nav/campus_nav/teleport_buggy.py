@@ -65,7 +65,7 @@ def get_current_gz_pose(model='saye'):
     return None
 
 
-def find_parallel_road_yaw(gz_x, gz_y, current_yaw=3.14159, osm_path=DEFAULT_OSM):
+def find_parallel_road_yaw(gz_x, gz_y, current_yaw=1.5708, osm_path=DEFAULT_OSM):
     """
     Find the tangent heading of the nearest road segment to (gz_x, gz_y),
     and return the Gazebo yaw that aligns the buggy parallel to that road.
@@ -122,9 +122,8 @@ def find_parallel_road_yaw(gz_x, gz_y, current_yaw=3.14159, osm_path=DEFAULT_OSM
     for d, (x1, y1), (x2, y2) in candidate_segments[:4]:
         road_angle = math.atan2(y2 - y1, x2 - x1)
         for direction in (road_angle, road_angle + math.pi):
-            # Because front is along -Y of base_link:
-            # yaw_gz = direction + pi/2
-            cand_yaw = (direction + math.pi / 2.0 + math.pi) % (2.0 * math.pi) - math.pi
+            # base_link is x-forward, so the Gazebo yaw equals the road direction
+            cand_yaw = (direction + math.pi) % (2.0 * math.pi) - math.pi
             diff = angle_diff(cand_yaw, current_yaw)
             if diff < best_diff:
                 best_diff = diff
@@ -134,7 +133,7 @@ def find_parallel_road_yaw(gz_x, gz_y, current_yaw=3.14159, osm_path=DEFAULT_OSM
     return best_yaw, best_road_deg, candidate_segments[0][0]
 
 
-def teleport_gz(gz_x, gz_y, gz_z=ROAD_SURFACE_Z, yaw=3.14159, world='campus_world', model='saye'):
+def teleport_gz(gz_x, gz_y, gz_z=ROAD_SURFACE_Z, yaw=1.5708, world='campus_world', model='saye'):
     """Send set_pose request to Gazebo simulation service and zero out velocities."""
     # 1. Stop any momentum immediately
     subprocess.run(
@@ -184,7 +183,7 @@ def main():
     curr_x = current_pose[0] if current_pose else 15.02
     curr_y = current_pose[1] if current_pose else 43.00
     curr_z = current_pose[2] if current_pose else ROAD_SURFACE_Z
-    curr_yaw = current_pose[3] if current_pose else 3.14159
+    curr_yaw = current_pose[3] if current_pose else 1.5708
 
     target_x = curr_x
     target_y = curr_y

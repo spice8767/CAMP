@@ -9,6 +9,19 @@ Responsibilities:
      yellow heading arrow, and label, visible in RViz!
   5. Void Recovery Supervisor: If the buggy ever drops below Z = -0.5m, it automatically
      catches the buggy, zeroes velocity, and safely respawns it onto the nearest road.
+  6. Ground truth is published ONLY as /gt/odom (frame 'world') to compare against SLAM.
+     This node does NOT broadcast the robot's TF: SLAM owns odom -> base_footprint and
+     robot_state_publisher owns base_footprint -> base_link -> chassis_link -> sensors.
+  7. Publishes static map -> world (the planner/Gazebo coordinate offset). The mission
+     controller publishes /campus/target_path in frame 'world', so Nav2 needs this link.
+  8. Seeds the static map -> odom transform once from the first ground-truth pose
+     (simulation only; on the real cart use a known start pose or GPS instead).
+  9. Optional bring-up mode (param gt_odom_tf=True): ALSO publishes odom -> base_footprint
+     from ground truth, so the whole stack runs before SLAM exists. Set it False as soon
+     as SLAM publishes odom -> base_footprint (two parents would break TF).
+
+Frame convention: base_link is x-forward (REP-103), so the Gazebo yaw of base_footprint
+is already the driving yaw. No nav_base_link frame is used any more.
 """
 
 import math
@@ -20,8 +33,8 @@ from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped, Twist, Point, Quaternion, TransformStamped
 from nav_msgs.msg import Odometry, Path
 from visualization_msgs.msg import Marker, MarkerArray
-from tf2_msgs.msg import TFMessage
-from tf2_ros import TransformBroadcaster
+from std_msgs.msg import Empty
+from tf2_ros import StaticTransformBroadcaster, TransformBroadcaster
 
 from campus_nav.coord_bridge import gz_to_nav, nav_to_gz, yaw_from_quaternion, quaternion_from_yaw
 from campus_nav.osm_loader import CampusMap
@@ -66,16 +79,42 @@ class OdomBridgeNode(Node):
         self.vehicle_pose_pub = self.create_publisher(
             PoseStamped, '/campus/vehicle_pose', 10)
         self.odom_pub = self.create_publisher(
-            Odometry, '/odom', 10)
+            Odometry, '/gt/odom', 10)
         self.marker_pub = self.create_publisher(
             MarkerArray, '/campus/vehicle_marker', 10)
         self.cmd_pub = self.create_publisher(
             Twist, '/cmd_vel', 10)
         self.abort_pub = self.create_publisher(
             Path, '/campus/target_path', 10)
+        # Fired after a void-recovery teleport so SLAM / localization can be reset
+        self.respawn_pub = self.create_publisher(
+            Empty, '/campus/respawn_event', 10)
 
-        # TF Broadcaster: connects map -> base_footprint -> base_link -> lidar_link
+        # Static TF map -> odom, seeded once from the first ground-truth pose.
+        # (odom -> base_footprint comes from SLAM, the rest from robot_state_publisher.)
+        self.declare_parameter('seed_map_to_odom', True)
+        self.seed_map_to_odom = self.get_parameter(
+            'seed_map_to_odom').get_parameter_value().bool_value
+        self.static_broadcaster = StaticTransformBroadcaster(self)
+        self.map_to_odom_sent = False
+        self.seed_pose = None   # (nav_x, nav_y, z, yaw) of the first ground-truth pose
+
+        # Bring-up mode: ground-truth odom -> base_footprint (turn OFF when SLAM runs)
+        self.declare_parameter('gt_odom_tf', False)
+        self.gt_odom_tf = self.get_parameter('gt_odom_tf').get_parameter_value().bool_value
         self.tf_broadcaster = TransformBroadcaster(self)
+
+        # Static map -> world: planner coords = Gazebo coords + (802.0, 679.7).
+        # Needed because /campus/target_path is published in frame 'world'.
+        t_world = TransformStamped()
+        t_world.header.stamp = self.get_clock().now().to_msg()
+        t_world.header.frame_id = 'map'
+        t_world.child_frame_id = 'world'
+        t_world.transform.translation.x = 802.0
+        t_world.transform.translation.y = 679.7
+        t_world.transform.translation.z = 0.0
+        t_world.transform.rotation.w = 1.0
+        self.static_broadcaster.sendTransform(t_world)
 
         # Subscribers
         # Ground truth world odometry from Gazebo bridge (/model/saye/odometry_world)
@@ -116,8 +155,8 @@ class OdomBridgeNode(Node):
         nav_x, nav_y = gz_to_nav(gz_x, gz_y)
         now = self.get_clock().now().to_msg()
 
-        # Buggy's driving heading in map coordinates: yaw - pi/2 (due to URDF local frame)
-        driving_yaw = yaw - (math.pi / 2.0)
+        # base_link is x-forward, so the model yaw IS the driving heading
+        driving_yaw = yaw
         qx, qy, qz, qw = quaternion_from_yaw(driving_yaw)
 
         # ── 3. Publish /campus/vehicle_pose ─────────────────────────────────────
@@ -133,57 +172,68 @@ class OdomBridgeNode(Node):
         pose_msg.pose.orientation.w = qw
         self.vehicle_pose_pub.publish(pose_msg)
 
-        # ── 4. Publish /odom (Gazebo frame) ─────────────────────────────────────
+        # ── 4. Publish ground truth as /gt/odom (NOT /odom) ─────────────────────────────────────
         odom_msg = Odometry()
         odom_msg.header.stamp = now
-        odom_msg.header.frame_id = 'odom'
-        odom_msg.child_frame_id = f'{self.model_name}/base_link'
+        odom_msg.header.frame_id = 'world'
+        odom_msg.child_frame_id = 'base_footprint'
         odom_msg.pose.pose.position.x = gz_x
         odom_msg.pose.pose.position.y = gz_y
         odom_msg.pose.pose.position.z = gz_z
         odom_msg.pose.pose.orientation = orientation_q
         self.odom_pub.publish(odom_msg)
 
-        # ── 4b. Broadcast TF: map -> world & map -> base_link ──────────────────
-        t = TransformStamped()
-        t.header.stamp = now
-        t.header.frame_id = 'map'
-        t.child_frame_id = 'world'
-        t.transform.translation.x = 802.0
-        t.transform.translation.y = 679.7
-        t.transform.translation.z = 0.0
-        t.transform.rotation.x = 0.0
-        t.transform.rotation.y = 0.0
-        t.transform.rotation.z = 0.0
-        t.transform.rotation.w = 1.0
-        self.tf_broadcaster.sendTransform(t)
+        # ── 4b. Seed static map -> odom once (SLAM's odom frame starts at identity) ──
+        if self.seed_pose is None:
+            self.seed_pose = (nav_x, nav_y, gz_z, driving_yaw)
+        if self.seed_map_to_odom and not self.map_to_odom_sent:
+            t = TransformStamped()
+            t.header.stamp = now
+            t.header.frame_id = 'map'
+            t.child_frame_id = 'odom'
+            t.transform.translation.x = nav_x
+            t.transform.translation.y = nav_y
+            t.transform.translation.z = gz_z
+            t.transform.rotation.x = qx
+            t.transform.rotation.y = qy
+            t.transform.rotation.z = qz
+            t.transform.rotation.w = qw
+            self.static_broadcaster.sendTransform(t)
+            self.map_to_odom_sent = True
+            self.get_logger().info(
+                f"Seeded static map->odom at ({nav_x:.2f}, {nav_y:.2f}), yaw {driving_yaw:.2f} rad")
 
-        # Removed conflicting map -> base_link TF broadcast
-        # since Gazebo publishes world -> base_footprint -> base_link, and we publish map -> world.
-
-        t_nav = TransformStamped()
-        t_nav.header.stamp = now
-        t_nav.header.frame_id = 'map'
-        t_nav.child_frame_id = 'nav_base_link'
-        t_nav.transform.translation.x = nav_x
-        t_nav.transform.translation.y = nav_y
-        t_nav.transform.translation.z = gz_z
-        t_nav.transform.rotation.x = qx
-        t_nav.transform.rotation.y = qy
-        t_nav.transform.rotation.z = qz
-        t_nav.transform.rotation.w = qw
-        self.tf_broadcaster.sendTransform(t_nav)
+        # ── 4c. Bring-up only: ground-truth odom -> base_footprint (relative to seed pose) ──
+        if self.gt_odom_tf and self.seed_pose is not None:
+            sx, sy, sz, syaw = self.seed_pose
+            dx, dy = nav_x - sx, nav_y - sy
+            c, s_ = math.cos(syaw), math.sin(syaw)
+            ox = c * dx + s_ * dy
+            oy = -s_ * dx + c * dy
+            oqx, oqy, oqz, oqw = quaternion_from_yaw(driving_yaw - syaw)
+            t_odom = TransformStamped()
+            t_odom.header.stamp = now
+            t_odom.header.frame_id = 'odom'
+            t_odom.child_frame_id = 'base_footprint'
+            t_odom.transform.translation.x = ox
+            t_odom.transform.translation.y = oy
+            t_odom.transform.translation.z = gz_z - sz
+            t_odom.transform.rotation.x = oqx
+            t_odom.transform.rotation.y = oqy
+            t_odom.transform.rotation.z = oqz
+            t_odom.transform.rotation.w = oqw
+            self.tf_broadcaster.sendTransform(t_odom)
 
         # ── 5. Publish 3D High-Contrast Vehicle Marker for RViz ────────────────
         self._publish_vehicle_markers(now)
 
     def _publish_vehicle_markers(self, stamp):
-        """Constructs and publishes a 3D high-visibility buggy marker in RViz (attached to base_link)."""
+        """Constructs and publishes a 3D high-visibility buggy marker in RViz (attached to chassis_link)."""
         ma = MarkerArray()
 
         # 1. Main Chassis (Fluorescent Orange)
         body = Marker()
-        body.header.frame_id = 'base_link'
+        body.header.frame_id = 'chassis_link'
         body.header.stamp = stamp
         body.ns = 'buggy'
         body.id = 0
@@ -283,12 +333,12 @@ class OdomBridgeNode(Node):
             target_nav_x, target_nav_y = gz_to_nav(respawn_gz_x, respawn_gz_y)
 
         # Orient buggy towards connected road neighbor (inwards towards campus)
-        respawn_yaw_gz = 1.5708
+        respawn_yaw_gz = 0.0  # nav yaw 0 == gz yaw 0 (base_link is x-forward)
         if nearest_nid and nearest_nid in self.campus.road_graph and self.campus.road_graph[nearest_nid]:
             nbr = next(iter(self.campus.road_graph[nearest_nid]))
             nbr_x, nbr_y = self.campus.xy_nodes[nbr]
             nav_angle = math.atan2(nbr_y - target_nav_y, nbr_x - target_nav_x)
-            respawn_yaw_gz = nav_angle + (math.pi / 2.0)
+            respawn_yaw_gz = nav_angle
 
         qz = math.sin(respawn_yaw_gz / 2.0)
         qw = math.cos(respawn_yaw_gz / 2.0)
@@ -309,6 +359,9 @@ class OdomBridgeNode(Node):
             '--req', req
         ]
         subprocess.run(cmd, capture_output=True, text=True)
+
+        # Tell SLAM / localization the pose just jumped (they must reset and re-seed)
+        self.respawn_pub.publish(Empty())
 
 
 def main(args=None):

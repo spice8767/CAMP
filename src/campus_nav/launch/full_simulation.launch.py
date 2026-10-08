@@ -4,7 +4,7 @@ Full Simulation Launch — Phase 4
 One command to start the complete autonomous campus navigation stack:
   - Gazebo Harmonic with campus world
   - saye buggy robot spawned on campus
-  - ros_gz_bridge (cmd_vel, tf, clock)
+  - ros_gz_bridge (cmd_vel, clock, sensors; NO /tf bridge)
   - campus_nav planner (A* + trajectory + markers + RViz)
   - odom_bridge_node (Gazebo pose → planner coords)
   - path_follower_node (Pure Pursuit controller → /cmd_vel)
@@ -148,7 +148,7 @@ def generate_launch_description():
                 '-x', '15.02',
                 '-y', '43.00',
                 '-z', '0.80',
-                '-Y', '3.14159'
+                '-Y', '1.5708'   # base_link is x-forward: face north (+Y), same as before
             ],
             output='screen'
         )]
@@ -220,7 +220,9 @@ def generate_launch_description():
         executable='odom_bridge_node',
         name='odom_bridge_node',
         output='screen',
-        parameters=[{'model_name': 'saye', 'use_sim_time': True}]
+        parameters=[{'model_name': 'saye', 'use_sim_time': True,
+                     # Bring-up: ground-truth odom->base_footprint. Set False once SLAM publishes it.
+                     'gt_odom_tf': True}]
     )
 
     # ── [COMMENTED OUT] Pure Pursuit Path Follower ─────────────────────────────

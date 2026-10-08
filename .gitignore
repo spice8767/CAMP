@@ -48,3 +48,9 @@ Thumbs.db
 .env.local
 .env.*.local
 
+build/
+install/
+log/
+**/build/
+**/install/
+**/log/

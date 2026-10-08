@@ -9,6 +9,7 @@
       filename="gz-sim-physics-system"
       name="gz::sim::systems::Physics">
     </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
     
     <plugin
       filename="gz-sim-sensors-system"
